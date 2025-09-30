@@ -7,6 +7,30 @@ import { config } from 'dotenv';
 import Joi from 'joi';
 import path from 'path';
 
+export type MCPServerType = 'serena' | 'playwright' | 'github';
+
+export interface MCPServerConnectionDefinition {
+  /** Identifies the MCP server integration type. */
+  type: MCPServerType;
+  /** Human-friendly server name for logging and dashboards. */
+  name: string;
+  /** Resolved endpoint URI used when establishing the MCP link. */
+  endpoint: string;
+  /** Allows disabling connections without removing configuration. */
+  enabled: boolean;
+}
+
+export interface MCPAgentConnection {
+  /** Stable identifier that maps to the consuming agent. */
+  agentId: string;
+  /** Display label surfaced to coordination tooling. */
+  displayName: string;
+  /** Optional description for documentation surfaces. */
+  description?: string;
+  /** MCP server connections the agent should establish. */
+  servers: MCPServerConnectionDefinition[];
+}
+
 // Load environment variables from .env file
 config();
 
@@ -29,6 +53,9 @@ export interface AppConfig {
     hotReloadEnabled: boolean;
     toolScanInterval: number;
   };
+
+  // MCP agent connection registry
+  mcpAgents: MCPAgentConnection[];
 
   // Logging configuration
   logging: {
@@ -171,6 +198,28 @@ const configSchema = Joi.object<AppConfig>({
     toolScanInterval: Joi.number().min(1000).default(5000)
   }).required(),
 
+  mcpAgents: Joi.array()
+    .items(
+      Joi.object({
+        agentId: Joi.string().required(),
+        displayName: Joi.string().required(),
+        description: Joi.string().allow('').optional(),
+        servers: Joi.array()
+          .items(
+            Joi.object({
+              type: Joi.string().valid('serena', 'playwright', 'github').required(),
+              name: Joi.string().required(),
+              endpoint: Joi.string().uri({ scheme: ['http', 'https'] }).required(),
+              enabled: Joi.boolean().default(true)
+            })
+          )
+          .min(1)
+          .required()
+      })
+    )
+    .min(1)
+    .required(),
+
   logging: Joi.object({
     level: Joi.string().valid('debug', 'info', 'warn', 'error').default('info'),
     format: Joi.string().valid('json', 'text').default('json'),
@@ -292,6 +341,51 @@ const configSchema = Joi.object<AppConfig>({
  * Load and validate configuration from environment variables
  */
 function loadConfig(): AppConfig {
+  const serenaEndpoint = process.env.MCP_SERVER_SERENA_ENDPOINT || 'http://localhost:4100';
+  const playwrightEndpoint = process.env.MCP_SERVER_PLAYWRIGHT_ENDPOINT || 'http://localhost:4200';
+  const githubEndpoint = process.env.MCP_SERVER_GITHUB_ENDPOINT || 'https://api.github.com';
+
+  const serenaEnabled = process.env.MCP_SERVER_SERENA_ENABLED !== 'false';
+  const playwrightEnabled = process.env.MCP_SERVER_PLAYWRIGHT_ENABLED !== 'false';
+  const githubEnabled = process.env.MCP_SERVER_GITHUB_ENABLED !== 'false';
+
+  const baseServerDefinitions: MCPServerConnectionDefinition[] = [
+    {
+      type: 'serena',
+      name: 'Serena MCP Server',
+      endpoint: serenaEndpoint,
+      enabled: serenaEnabled
+    },
+    {
+      type: 'playwright',
+      name: 'Playwright MCP Server',
+      endpoint: playwrightEndpoint,
+      enabled: playwrightEnabled
+    },
+    {
+      type: 'github',
+      name: 'GitHub MCP Server',
+      endpoint: githubEndpoint,
+      enabled: githubEnabled
+    }
+  ];
+
+  const agentDefinitions: Array<{ agentId: string; displayName: string; description?: string }> = [
+    { agentId: 'claude', displayName: 'Claude' },
+    { agentId: 'gemini', displayName: 'Gemini' },
+    { agentId: 'quinn', displayName: 'Quinn' },
+    { agentId: 'opencode', displayName: 'OpenCode' },
+    { agentId: 'crush', displayName: 'Crush' },
+    { agentId: 'coding', displayName: 'Coding Agents' }
+  ];
+
+  const agentConnections: MCPAgentConnection[] = agentDefinitions.map(({ agentId, displayName, description }) => ({
+    agentId,
+    displayName,
+    description,
+    servers: baseServerDefinitions.map((server) => ({ ...server }))
+  }));
+
   const rawConfig = {
     server: {
       port: parseInt(process.env.PORT || '3000'),
@@ -306,6 +400,8 @@ function loadConfig(): AppConfig {
       hotReloadEnabled: process.env.HOT_RELOAD_ENABLED !== 'false',
       toolScanInterval: parseInt(process.env.TOOL_SCAN_INTERVAL || '5000')
     },
+
+    mcpAgents: agentConnections,
 
     logging: {
       level: process.env.LOG_LEVEL || 'info',

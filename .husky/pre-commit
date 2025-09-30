@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -e
+
+# Run staged file quality checks before allowing commit
+npx --no -- lint-staged
