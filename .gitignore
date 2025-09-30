@@ -59,6 +59,8 @@ Thumbs.db
 
 # Tests
 coverage/
+test-results.json
+tmp_test_write.txt
 
 # Deno specific (if applicable)
 deno-lock.json
