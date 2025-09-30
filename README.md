@@ -143,6 +143,8 @@ HOT_RELOAD_ENABLED=true
 DEBUG_ENDPOINTS=true
 ```
 
+Claude, Gemini, Quinn, OpenCode, Crush, and Coding agents now share configurable MCP endpoints. Update `MCP_SERVER_SERENA_ENDPOINT`, `MCP_SERVER_PLAYWRIGHT_ENDPOINT`, and `MCP_SERVER_GITHUB_ENDPOINT` (plus the matching `*_ENABLED` flags) to point at your Serena, Playwright, and GitHub MCP servers before activating the agents.
+
 See [Environment Configuration Guide](./docs/environment-configuration.md) for complete options.
 
 ## 🔧 Creating Custom Tools
@@ -176,16 +178,16 @@ export class MyCustomTool extends BaseMCPTool<MyToolInput, MyToolOutput> {
       properties: {
         parameter1: {
           type: 'string',
-          description: 'Description of parameter1'
+          description: 'Description of parameter1',
         },
         parameter2: {
           type: 'number',
           description: 'Optional numeric parameter',
-          minimum: 0
-        }
+          minimum: 0,
+        },
       },
-      required: ['parameter1']
-    }
+      required: ['parameter1'],
+    },
   };
 
   async execute(input: MyToolInput): Promise<MyToolOutput> {
@@ -198,8 +200,8 @@ export class MyCustomTool extends BaseMCPTool<MyToolInput, MyToolOutput> {
       success: true,
       result,
       metadata: {
-        processingTime: Date.now() - startTime
-      }
+        processingTime: Date.now() - startTime,
+      },
     };
   }
 
@@ -240,8 +242,7 @@ describe('MyCustomTool', () => {
   it('should validate input schema', async () => {
     const invalidInput = { wrongParameter: 'value' };
 
-    await expect(tool.execute(invalidInput as any))
-      .rejects.toThrow('Validation failed');
+    await expect(tool.execute(invalidInput as any)).rejects.toThrow('Validation failed');
   });
 });
 ```
@@ -255,26 +256,26 @@ tests/
 ├── unit/              # Unit tests for individual components
 ├── integration/       # Integration tests for tool workflows
 ├── e2e/              # End-to-end tests with real MCP clients
-├── setup/            # Test configuration and utilities
-└── utils/            # Test helper functions
+└── setup/            # Test configuration and utilities
 ```
 
 ### Writing Tests
 
 ```typescript
 import { describe, it, expect, beforeEach } from 'vitest';
-import { mcpAssertions, testUtils } from '@/tests/utils/test-helpers';
+import { createServer } from '@/server';
 
 describe('Tool Integration', () => {
-  beforeEach(() => {
-    // Setup runs before each test
+  beforeEach(async () => {
+    await createServer();
   });
 
   it('should handle MCP request/response cycle', async () => {
-    const request = testUtils.createMockMCPRequest('my-tool', { param: 'value' });
-    const response = await executeToolRequest(request);
+    const response = await executeToolRequest({
+      tool: 'my-tool',
+      params: { param: 'value' },
+    });
 
-    mcpAssertions.assertMCPResponse(response);
     expect(response.result.success).toBe(true);
   });
 });
@@ -391,17 +392,20 @@ We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md)
 ### Development Process
 
 1. **Fork and Clone**
+
    ```bash
    git clone https://github.com/your-username/mcp-strudel-kit.git
    cd mcp-strudel-kit
    ```
 
 2. **Create Feature Branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
 3. **Setup Development Environment**
+
    ```bash
    npm install
    cp .env.example .env
@@ -409,6 +413,7 @@ We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md)
    ```
 
 4. **Make Changes and Test**
+
    ```bash
    npm run test
    npm run lint

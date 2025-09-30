@@ -1,5 +1,6 @@
 # Story 1.2: MCP Server Core Implementation
 
+**Status**: Draft
 **Epic**: Foundation & Core Infrastructure
 **Priority**: P0
 **Story Points**: 5
@@ -13,6 +14,7 @@ As an AI agent integrating with the MCP server, I want a fully compliant JSON-RP
 ## Acceptance Criteria
 
 ### AC1: xmcp Framework Integration
+
 - [ ] xmcp server instance created and configured
 - [ ] JSON-RPC 2.0 compliance verified
 - [ ] MCP protocol message handling implemented
@@ -20,6 +22,7 @@ As an AI agent integrating with the MCP server, I want a fully compliant JSON-RP
 - [ ] Graceful shutdown handling implemented
 
 ### AC2: Request/Response Handling
+
 - [ ] Incoming MCP requests properly parsed and validated
 - [ ] Request routing to appropriate tool handlers
 - [ ] Response formatting follows MCP specification
@@ -27,6 +30,7 @@ As an AI agent integrating with the MCP server, I want a fully compliant JSON-RP
 - [ ] Request correlation IDs maintained throughout processing
 
 ### AC3: Tool Execution Framework
+
 - [ ] Generic tool execution interface defined
 - [ ] Tool input validation before execution
 - [ ] Tool output validation before response
@@ -34,6 +38,7 @@ As an AI agent integrating with the MCP server, I want a fully compliant JSON-RP
 - [ ] Timeout handling for long-running operations
 
 ### AC4: Middleware Pipeline
+
 - [ ] Logging middleware for request/response tracking
 - [ ] Error handling middleware with structured errors
 - [ ] Request validation middleware using Joi schemas
@@ -41,6 +46,7 @@ As an AI agent integrating with the MCP server, I want a fully compliant JSON-RP
 - [ ] Rate limiting middleware for basic protection
 
 ### AC5: Configuration Management
+
 - [ ] Environment-based configuration loading
 - [ ] Server port and host configuration
 - [ ] Tool execution timeout configuration
@@ -50,6 +56,7 @@ As an AI agent integrating with the MCP server, I want a fully compliant JSON-RP
 ## Implementation Details
 
 ### Core Server Structure
+
 ```typescript
 // src/server.ts
 import { createMCPServer } from 'xmcp';
@@ -60,11 +67,12 @@ import { logger } from './middleware/logging';
 const server = createMCPServer({
   port: process.env.PORT || 3000,
   router: toolRouter,
-  middleware: [logger, errorHandler]
+  middleware: [logger, errorHandler],
 });
 ```
 
 ### Request Flow
+
 1. AI agent sends JSON-RPC 2.0 request
 2. xmcp framework parses and validates format
 3. Request routed to tool registry
@@ -74,6 +82,7 @@ const server = createMCPServer({
 7. Response sent back to agent
 
 ### Error Handling Strategy
+
 ```typescript
 interface MCPError {
   code: number;
@@ -89,13 +98,14 @@ const ErrorCodes = {
   METHOD_NOT_FOUND: -32601,
   INVALID_PARAMS: -32602,
   INTERNAL_ERROR: -32603,
-  TOOL_EXECUTION_ERROR: -32000
+  TOOL_EXECUTION_ERROR: -32000,
 };
 ```
 
 ## Testing Requirements
 
 ### Unit Tests
+
 - [ ] Server initialization and configuration
 - [ ] Request parsing and validation
 - [ ] Response formatting compliance
@@ -103,6 +113,7 @@ const ErrorCodes = {
 - [ ] Middleware pipeline execution order
 
 ### Integration Tests
+
 - [ ] End-to-end request/response cycle
 - [ ] Tool execution through MCP interface
 - [ ] Error scenarios with proper error responses
@@ -110,6 +121,7 @@ const ErrorCodes = {
 - [ ] Concurrent request handling
 
 ### Compliance Tests
+
 - [ ] JSON-RPC 2.0 specification compliance
 - [ ] MCP protocol adherence
 - [ ] Response format validation
@@ -130,6 +142,7 @@ const ErrorCodes = {
 ## API Standards
 
 ### Request Format
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -146,6 +159,7 @@ const ErrorCodes = {
 ```
 
 ### Response Format
+
 ```json
 {
   "jsonrpc": "2.0",
