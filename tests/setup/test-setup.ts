@@ -3,9 +3,10 @@
  * Configures test environment and provides common test utilities
  */
 
-import { beforeEach, afterEach, vi } from 'vitest';
-import { promises as fs } from 'fs';
-import path from 'path';
+import { randomUUID } from 'node:crypto';
+import { mkdir, rm } from 'node:fs/promises';
+import path from 'node:path';
+import { afterEach, beforeEach, vi } from 'vitest';
 
 // Global test configuration
 beforeEach(() => {
@@ -32,13 +33,38 @@ afterEach(() => {
 });
 
 // Export common test utilities
+type JsonRpcId = string | number | null;
+
+export interface MockMcpRequest<TParams = Record<string, unknown>> {
+  jsonrpc: '2.0';
+  method: string;
+  params: TParams;
+  id: JsonRpcId;
+}
+
+export interface MockMcpSuccessResponse<TResult = unknown> {
+  jsonrpc: '2.0';
+  result: TResult;
+  id: JsonRpcId;
+}
+
+export interface MockMcpErrorResponse<TData = unknown> {
+  jsonrpc: '2.0';
+  error: {
+    code: number;
+    message: string;
+    data?: TData;
+  };
+  id: JsonRpcId;
+}
+
 export const testUtils = {
   /**
    * Create a temporary directory for test files
    */
   async createTempDir(testName: string): Promise<string> {
     const tempDir = path.join(process.env.TEST_TEMP_DIR || 'temp/test', testName);
-    await fs.mkdir(tempDir, { recursive: true });
+    await mkdir(tempDir, { recursive: true });
     return tempDir;
   },
 
@@ -47,8 +73,8 @@ export const testUtils = {
    */
   async cleanupTempDir(dirPath: string): Promise<void> {
     try {
-      await fs.rmdir(dirPath, { recursive: true });
-    } catch (error) {
+      await rm(dirPath, { recursive: true, force: true });
+    } catch {
       // Ignore cleanup errors in tests
     }
   },
@@ -56,38 +82,50 @@ export const testUtils = {
   /**
    * Create a mock MCP request
    */
-  createMockMCPRequest(method: string, params: any = {}, id: string = 'test-1') {
+  createMockMCPRequest<TParams = Record<string, unknown>>(
+    method: string,
+    params: TParams = {} as TParams,
+    id: JsonRpcId = 'test-1',
+  ): MockMcpRequest<TParams> {
     return {
       jsonrpc: '2.0' as const,
       method,
       params,
-      id
+      id,
     };
   },
 
   /**
    * Create expected MCP response format
    */
-  createExpectedMCPResponse(result: any, id: string = 'test-1') {
+  createExpectedMCPResponse<TResult = unknown>(
+    result: TResult,
+    id: JsonRpcId = 'test-1',
+  ): MockMcpSuccessResponse<TResult> {
     return {
       jsonrpc: '2.0' as const,
       result,
-      id
+      id,
     };
   },
 
   /**
    * Create expected MCP error response
    */
-  createExpectedMCPError(code: number, message: string, id: string = 'test-1', data?: any) {
+  createExpectedMCPError<TData = unknown>(
+    code: number,
+    message: string,
+    id: JsonRpcId = 'test-1',
+    data?: TData,
+  ): MockMcpErrorResponse<TData> {
     return {
       jsonrpc: '2.0' as const,
       error: {
         code,
         message,
-        ...(data && { data })
+        ...(data !== undefined ? { data } : {}),
       },
-      id
+      id,
     };
   },
 
@@ -95,20 +133,20 @@ export const testUtils = {
    * Wait for a specified amount of time (for async operations)
    */
   async wait(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    await new Promise<void>((resolve) => {
+      setTimeout(resolve, ms);
+    });
   },
 
   /**
    * Generate random test data
    */
   generateTestId(): string {
-    return `test-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-  }
+    return randomUUID();
+  },
 };
 
 // Make test utilities available globally
-declare global {
-  var testUtils: typeof testUtils;
-}
+type GlobalWithTestUtils = typeof globalThis & { testUtils: typeof testUtils };
 
-global.testUtils = testUtils;
+(globalThis as GlobalWithTestUtils).testUtils = testUtils;

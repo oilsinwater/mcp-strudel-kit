@@ -1,18 +1,23 @@
-import { GlobalSetupContext } from 'vitest/node';
-import { spawn } from 'child_process';
-import { promises as fs } from 'fs';
-import path from 'path';
+/* eslint-disable no-console */
+import { mkdir, rm } from 'node:fs/promises';
+import path from 'node:path';
 
 /**
  * Global test setup - runs once before all tests
  * Sets up test databases, mock services, and shared resources
  */
-export default async function globalSetup(ctx: GlobalSetupContext): Promise<() => void> {
+type MockServer = {
+  close: () => void | Promise<void>;
+} | null;
+
+type ActiveMockServer = Exclude<MockServer, null>;
+
+export default async function globalSetup(): Promise<() => void> {
   console.log('🚀 Setting up global test environment...');
 
   // Create temporary directories for test artifacts
   const testTempDir = path.join(process.cwd(), 'temp/test');
-  await fs.mkdir(testTempDir, { recursive: true });
+  await mkdir(testTempDir, { recursive: true });
 
   // Set test environment variables
   process.env.NODE_ENV = 'test';
@@ -21,7 +26,8 @@ export default async function globalSetup(ctx: GlobalSetupContext): Promise<() =
   process.env.TEST_TEMP_DIR = testTempDir;
 
   // Start mock services if needed
-  let mockServer: any = null;
+  // eslint-disable-next-line prefer-const -- This will be assigned when mock services are enabled.
+  let mockServer: MockServer = null;
 
   // Mock external API endpoints for testing
   if (process.env.START_MOCK_SERVICES === 'true') {
@@ -36,13 +42,13 @@ export default async function globalSetup(ctx: GlobalSetupContext): Promise<() =
     console.log('🧹 Cleaning up global test environment...');
 
     // Stop mock services
-    if (mockServer) {
-      await mockServer.close();
+    if (mockServer !== null) {
+      await (mockServer as ActiveMockServer).close();
     }
 
     // Clean up temporary files
     try {
-      await fs.rmdir(testTempDir, { recursive: true });
+      await rm(testTempDir, { recursive: true, force: true });
     } catch (error) {
       console.warn('Warning: Could not clean up test temp directory:', error);
     }
