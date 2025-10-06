@@ -1,37 +1,36 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "ESNext",
-    "moduleResolution": "node16",
-    "lib": ["ES2020"],
-    "allowJs": false,
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true,
-    "emitDeclarationOnly": false,
-    "strict": true,
-    "noImplicitOverride": true,
-    "noFallthroughCasesInSwitch": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022"],
+    "allowJs": true,
     "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
-    "sourceMap": true,
-    "types": ["node"],
+    "isolatedModules": true,
+    "noEmit": true,
     "baseUrl": ".",
+    "types": ["node", "vitest", "vitest/globals"],
+    "sourceMap": true,
     "paths": {
       "@/*": ["src/*"],
+      "@/server": ["src/server.ts"],
       "@/core/*": ["src/core/*"],
       "@/tools/*": ["src/tools/*"],
       "@/middleware/*": ["src/middleware/*"],
-      "@/integrations/*": ["src/integrations/*"],
       "@/utils/*": ["src/utils/*"],
+      "@/integrations/*": ["src/integrations/*"],
       "@/tests/*": ["tests/*"]
-    },
-    "outDir": "dist",
-    "rootDir": "src"
+    }
   },
-  "include": ["src", "tests"],
-  "exclude": ["dist", "node_modules"]
+  "ts-node": {
+    "esm": true
+  },
+  "include": ["src", "tests", "config", "eslint.config.mjs", "vitest.config.ts"],
+  "exclude": ["node_modules", "dist"]
 }

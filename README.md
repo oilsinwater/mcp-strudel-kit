@@ -11,14 +11,14 @@ A production-ready Model Context Protocol (MCP) server that transforms scientifi
 
 ### Prerequisites
 
-- **Node.js 18+** (LTS recommended)
+- **Node.js 20+** (LTS recommended)
 - **npm 8+** or **yarn 1.22+**
 - **Strudel Kit CLI** (installed globally)
 
 ```bash
-# Install Node.js 18+ (if not installed)
-nvm install 18
-nvm use 18
+# Install Node.js 20+ (if not installed)
+nvm install 20
+nvm use 20
 
 # Install Strudel Kit CLI globally
 npm install -g @strudel-science/strudel-kit
@@ -89,15 +89,13 @@ mcp-strudel-kit/
 ```bash
 # Development
 npm run dev          # Start development server with hot reload
-npm run dev:debug    # Start with debugging enabled
-npm run dev:mock     # Start with mock external services
+npm run dev:debug    # Start with Node inspector enabled
 
 # Building
-npm run build        # Build for production
-npm run build:watch  # Build with file watching
+npm run build        # Build TypeScript into dist/
 
 # Testing
-npm run test         # Run all tests
+npm run test         # Run the full Vitest suite
 npm run test:unit    # Run unit tests only
 npm run test:integration  # Run integration tests
 npm run test:e2e     # Run end-to-end tests
@@ -111,13 +109,8 @@ npm run format       # Format code with Prettier
 npm run format:check # Check code formatting
 npm run type-check   # TypeScript type checking
 
-# Documentation
-npm run docs:build   # Generate API documentation
-npm run docs:serve   # Serve documentation locally
-
 # Production
-npm start            # Start production server
-npm run start:cluster # Start with cluster mode
+npm start            # Start production server (requires build)
 ```
 
 ### Environment Configuration

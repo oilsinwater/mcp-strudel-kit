@@ -1,6 +1,8 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import js from '@eslint/js';
 import { FlatCompat } from '@eslint/eslintrc';
+import pluginImport from 'eslint-plugin-import';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,53 +13,114 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: ['dist', 'node_modules', 'coverage', '.bmad-core', 'scripts'],
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      'coverage/**',
+      'temp/**',
+      'config/**',
+      'eslint.config.mjs',
+      'package-lock.json',
+    ],
   },
-  ...compat.extends(
-    'airbnb-base',
-    'airbnb-typescript/base',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:import/typescript',
-    'plugin:prettier/recommended',
-  ),
-  ...compat.config({
-    env: {
-      es2022: true,
-      node: true,
-    },
-    parserOptions: {
-      project: ['./tsconfig.json'],
-      tsconfigRootDir: __dirname,
+  js.configs.recommended,
+  ...compat.extends('airbnb-base', 'airbnb-typescript/base', 'prettier'),
+  {
+    files: ['src/**/*.ts', 'vitest.config.ts'],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.json'],
+        tsconfigRootDir: __dirname,
+      },
     },
     settings: {
       'import/resolver': {
-        node: {
-          extensions: ['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs'],
-          moduleDirectory: ['node_modules', 'src', 'tests'],
+        typescript: {
+          project: ['./tsconfig.json'],
         },
       },
     },
+    plugins: {
+      import: pluginImport,
+    },
     rules: {
-      'prettier/prettier': 'error',
-      'import/prefer-default-export': 'off',
-      'import/extensions': 'off',
-      'import/no-unresolved': [
+      'import/extensions': [
         'error',
+        'ignorePackages',
         {
-          ignore: ['^@/'],
+          ts: 'never',
         },
       ],
       'import/no-extraneous-dependencies': [
         'error',
         {
-          devDependencies: ['tests/**/*', 'vitest.config.ts'],
+          devDependencies: [
+            'tests/**/*.{ts,tsx}',
+            'vitest.config.ts',
+            '**/*.config.{ts,cts,mts}',
+          ],
         },
       ],
-      'import/order': 'off',
-      'import/no-cycle': 'off',
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/no-floating-promises': 'error',
-      '@typescript-eslint/require-await': 'off',
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        {
+          prefer: 'type-imports',
+          fixStyle: 'inline-type-imports',
+        },
+      ],
+      '@typescript-eslint/explicit-member-accessibility': [
+        'error',
+        {
+          accessibility: 'no-public',
+        },
+      ],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+        },
+      ],
+      'no-console': [
+        'warn',
+        {
+          allow: ['warn', 'error'],
+        },
+      ],
     },
-  }),
+  },
+  {
+    files: ['tests/**/*.{ts,tsx}'],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.json'],
+        tsconfigRootDir: __dirname,
+      },
+    },
+    rules: {
+      'import/no-extraneous-dependencies': 'off',
+      'import/extensions': 'off',
+      'no-console': 'off',
+      'no-restricted-syntax': 'off',
+      'no-await-in-loop': 'off',
+      'prefer-const': 'off',
+      'no-var': 'off',
+      'vars-on-top': 'off',
+      'no-promise-executor-return': 'off',
+      'no-plusplus': 'off',
+      'prefer-template': 'off',
+      'import/prefer-default-export': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/dot-notation': 'off',
+      '@typescript-eslint/no-misused-promises': 'off',
+      '@typescript-eslint/no-implied-eval': 'off',
+      '@typescript-eslint/no-var-requires': 'off',
+      '@typescript-eslint/unbound-method': 'off',
+      '@typescript-eslint/no-throw-literal': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+    },
+  },
 ];

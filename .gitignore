@@ -1,38 +1,9 @@
-#CLI agents
-.code/
-.claude/
-.clinerules/
-.crush/
-.gemini/
-.opencode/
-.serena/
-.vscode/
-.qwen/
+# BMAD (local only)
 .bmad-core/
 .bmad-*/
-.cursor/
-.continue/
-.codewhisperer/
-.copilot/
-.tabnine/
-.aider/
-.windsurf/
-.bolt/
-.v0/
-.replit/
-.stackblitz/
-.codesandbox/
-.gitpod/
-.codespaces/
-.anthropic/
-.openai/
-.deepseek/
-.mistral/
-.perplexity/
 
 # Dependencies
 node_modules/
-.tsx-tmp/
 *.log
 
 # Environment variables
@@ -59,8 +30,6 @@ Thumbs.db
 
 # Tests
 coverage/
-test-results.json
-tmp_test_write.txt
 
 # Deno specific (if applicable)
 deno-lock.json
