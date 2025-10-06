@@ -1,4 +1,5 @@
-/* eslint-disable no-console */
+import { GlobalSetupContext } from 'vitest/node';
+import { spawn } from 'child_process';
 import { mkdir, rm } from 'node:fs/promises';
 import path from 'node:path';
 
@@ -6,13 +7,7 @@ import path from 'node:path';
  * Global test setup - runs once before all tests
  * Sets up test databases, mock services, and shared resources
  */
-type MockServer = {
-  close: () => void | Promise<void>;
-} | null;
-
-type ActiveMockServer = Exclude<MockServer, null>;
-
-export default async function globalSetup(): Promise<() => void> {
+export default async function globalSetup(ctx: GlobalSetupContext): Promise<() => void> {
   console.log('🚀 Setting up global test environment...');
 
   // Create temporary directories for test artifacts
@@ -26,8 +21,7 @@ export default async function globalSetup(): Promise<() => void> {
   process.env.TEST_TEMP_DIR = testTempDir;
 
   // Start mock services if needed
-  // eslint-disable-next-line prefer-const -- This will be assigned when mock services are enabled.
-  let mockServer: MockServer = null;
+  let mockServer: any = null;
 
   // Mock external API endpoints for testing
   if (process.env.START_MOCK_SERVICES === 'true') {
@@ -42,8 +36,8 @@ export default async function globalSetup(): Promise<() => void> {
     console.log('🧹 Cleaning up global test environment...');
 
     // Stop mock services
-    if (mockServer !== null) {
-      await (mockServer as ActiveMockServer).close();
+    if (mockServer) {
+      await mockServer.close();
     }
 
     // Clean up temporary files
