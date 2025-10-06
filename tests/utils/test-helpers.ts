@@ -28,7 +28,7 @@ export const mockHelpers = {
       if (mockError) {
         mockProcess.stderr?.emit('data', mockError);
       }
-      mockProcess.emit('close', exitCode);
+      mockProcess.emit?.('close', exitCode);
     }, 10);
 
     return mockProcess;

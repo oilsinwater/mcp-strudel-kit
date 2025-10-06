@@ -1,14 +1,14 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.workspace.json",
   "compilerOptions": {
     "noEmit": false,
-    "incremental": false,
-    "outDir": "dist",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "removeComments": false
+    "outDir": "dist",
+    "rootDir": "src",
+    "incremental": true
   },
   "include": ["src"],
   "exclude": ["tests", "**/*.test.ts", "**/*.spec.ts"]

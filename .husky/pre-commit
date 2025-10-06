@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
-. "$(dirname "$0")/_/husky.sh"
+set -e
 
-npx lint-staged
+# Run staged file quality checks before allowing commit
+npx --no -- lint-staged

@@ -1,7 +1,7 @@
 import { GlobalSetupContext } from 'vitest/node';
 import { spawn } from 'child_process';
-import { promises as fs } from 'fs';
-import path from 'path';
+import { mkdir, rm } from 'node:fs/promises';
+import path from 'node:path';
 
 /**
  * Global test setup - runs once before all tests
@@ -12,7 +12,7 @@ export default async function globalSetup(ctx: GlobalSetupContext): Promise<() =
 
   // Create temporary directories for test artifacts
   const testTempDir = path.join(process.cwd(), 'temp/test');
-  await fs.mkdir(testTempDir, { recursive: true });
+  await mkdir(testTempDir, { recursive: true });
 
   // Set test environment variables
   process.env.NODE_ENV = 'test';
@@ -42,7 +42,7 @@ export default async function globalSetup(ctx: GlobalSetupContext): Promise<() =
 
     // Clean up temporary files
     try {
-      await fs.rmdir(testTempDir, { recursive: true });
+      await rm(testTempDir, { recursive: true, force: true });
     } catch (error) {
       console.warn('Warning: Could not clean up test temp directory:', error);
     }

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2020"],
+    "allowJs": false,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": false,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@/server": ["src/server.ts"],
+      "@/core/*": ["src/core/*"],
+      "@/tools/*": ["src/tools/*"],
+      "@/middleware/*": ["src/middleware/*"],
+      "@/integrations/*": ["src/integrations/*"],
+      "@/utils/*": ["src/utils/*"],
+      "@/tests/*": ["tests/*"]
+    },
+    "outDir": "dist",
+    "rootDir": "."
+  },
+  "include": ["src", "tests"],
+  "exclude": ["dist", "node_modules"]
+}

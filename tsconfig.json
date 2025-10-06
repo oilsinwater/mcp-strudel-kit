@@ -15,13 +15,22 @@
     "isolatedModules": true,
     "noEmit": true,
     "baseUrl": ".",
+    "types": ["node", "vitest", "vitest/globals"],
+    "sourceMap": true,
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@/server": ["src/server.ts"],
+      "@/core/*": ["src/core/*"],
+      "@/tools/*": ["src/tools/*"],
+      "@/middleware/*": ["src/middleware/*"],
+      "@/utils/*": ["src/utils/*"],
+      "@/integrations/*": ["src/integrations/*"],
+      "@/tests/*": ["tests/*"]
     }
   },
   "ts-node": {
     "esm": true
   },
-  "include": ["src", "tests", "eslint.config.mjs", "vitest.config.ts"],
+  "include": ["src", "tests", "config", "eslint.config.mjs", "vitest.config.ts"],
   "exclude": ["node_modules", "dist"]
 }

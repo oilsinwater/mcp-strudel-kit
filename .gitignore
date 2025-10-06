@@ -30,8 +30,6 @@ Thumbs.db
 
 # Tests
 coverage/
-*.test.ts
-*.test.js
 
 # Deno specific (if applicable)
 deno-lock.json

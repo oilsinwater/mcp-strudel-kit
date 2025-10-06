@@ -44,12 +44,9 @@ export default defineConfig({
     testTimeout: 10000,
     hookTimeout: 10000,
 
-    // Parallel test execution
-    threads: true,
-    maxThreads: 4,
 
     // Reporter configuration
-    reporter: ['verbose', 'json'],
+    reporters: ['verbose', 'json'],
     outputFile: {
       json: './test-results.json'
     },
@@ -71,6 +68,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@/server': path.resolve(__dirname, './src/server.ts'),
       '@/core': path.resolve(__dirname, './src/core'),
       '@/tools': path.resolve(__dirname, './src/tools'),
       '@/middleware': path.resolve(__dirname, './src/middleware'),

@@ -1,117 +1,56 @@
-# Quality Gate Decision: Story 1.1 - Project Initialization and Scaffolding
-# Epic: Foundation & Core Infrastructure
-# Story: docs/stories/story-1.1-project-initialization.md
+schema: 1
+story: '1.1'
+story_title: 'Story 1.1: Project Initialization and Scaffolding'
+gate: CONCERNS
+status_reason: 'Resolve deprecated fs usage and restore typed helpers in the shared test utilities before acceptance.'
+reviewer: 'Quinn (Test Architect)'
+updated: '2025-10-06T15:45:00Z'
 
-gate_decision: FAIL
-gate_status: Requires Implementation
-created_date: "2025-09-24"
-reviewed_by: Test Architect
-review_method: Static Analysis
+top_issues:
+  - severity: medium
+    summary: 'Test cleanup still relies on deprecated fs.rmdir with recursive option.'
+    refs:
+      - tests/setup/test-setup.ts:49
+    suggested_owner: dev
+  - severity: medium
+    summary: 'Shared test utilities now use any-typed helpers, removing prior compile-time guarantees.'
+    refs:
+      - tests/setup/test-setup.ts:57
+    suggested_owner: dev
 
-# Executive Summary
-summary: |
-  The project initialization story (1.1) has not been completed.
-  The basic project structure required by the acceptance criteria is missing.
-  Critical components like src/ directory, TypeScript configuration, and development tools are not set up.
+waiver:
+  active: false
 
-# Requirements Traceability
-acceptance_criteria_status:
-  AC1: # Project Structure Creation
-    status: FAIL
-    evidence: |
-      - src/ directory does not exist
-      - Core subdirectories (core/, tools/, middleware/, utils/) missing
-      - tests/ directory exists but unit/, integration/, e2e/ subdirs missing proper structure
-      - config/ directory exists but not properly configured per requirements
-  AC2: # Package Configuration
+quality_score: 80
+expires: '2025-10-20T00:00:00Z'
+
+evidence:
+  tests_reviewed: 2
+  risks_identified: 2
+  trace:
+    ac_covered: [1, 2, 3, 4, 5]
+    ac_gaps: []
+
+nfr_validation:
+  security:
+    status: PASS
+    notes: 'No security-sensitive surfaces touched in this story.'
+  performance:
+    status: PASS
+    notes: 'Scaffolding changes only; no runtime impact observed.'
+  reliability:
+    status: PASS
+    notes: 'Bootstrap flow executes without errors under Vitest integration coverage.'
+  maintainability:
     status: CONCERNS
-    evidence: |
-      - package.json exists but lacks proper configuration
-      - Missing xmcp framework dependency
-      - Missing TypeScript, Vitest, ESLint, Prettier as dependencies
-      - Scripts for dev, build, test, lint commands missing
-      - TypeScript 5.0+ and Node.js 18+ not specified in engines
-  AC3: # TypeScript Configuration
-    status: FAIL
-    evidence: |
-      - tsconfig.json does not exist
-      - No TypeScript configuration with strict mode
-      - Path aliases not configured
-      - Source maps not enabled
-  AC4: # Code Quality Tools
-    status: FAIL
-    evidence: |
-      - ESLint configuration (.eslintrc.js) missing
-      - Prettier configuration (.prettierrc) missing
-      - Pre-commit hooks not set up
-      - Current .gitignore has basic setup but needs expansion
-  AC5: # Development Environment
-    status: FAIL
-    evidence: |
-      - No development server script configured
-      - Hot reload functionality not working
-      - Environment variable loading not properly configured
-      - No debug configuration for IDEs
+    notes: 'Loss of type safety and deprecated APIs in test utilities should be corrected.'
 
-# Risk Assessment
-risk_rating: HIGH
-risk_factors:
-  - Missing foundational project structure
-  - No TypeScript configuration for type safety
-  - Lacking development tools for code quality
-  - No proper build or test infrastructure
-  - Blocks all subsequent stories in Epic 1
-
-# Test Coverage Analysis
-test_coverage:
-  unit_tests: "0% - No unit tests implemented"
-  integration_tests: "0% - No integration tests implemented"
-  e2e_tests: "0% - No e2e tests implemented"
-  coverage_evidence: "No test structure implemented according to story requirements"
-
-# Quality Gate Rationale
-rationale: |
-  The project initialization story has not been implemented.
-  The current project state lacks the basic structure, configurations,
-  and dependencies required by the acceptance criteria.
-  Without these foundational elements, subsequent stories cannot be properly implemented.
-  The package.json has minimal configuration and the src directory doesn't exist.
-  All major acceptance criteria are unmet.
-
-# Required Actions
-required_actions:
-  - Create src/ directory structure with core/, tools/, middleware/, utils/ subdirectories
-  - Create tests/ directory structure with unit/, integration/, e2e/ subdirectories
-  - Configure package.json with required dependencies and scripts
-  - Set up TypeScript configuration (tsconfig.json) with strict mode
-  - Configure ESLint and Prettier with appropriate rules
-  - Set up pre-commit hooks using Husky
-  - Implement development server script with hot reload
-  - Ensure all acceptance criteria are met before re-review
-
-# Recommendations
 recommendations:
-  - Complete the project initialization as a priority
-  - Verify all file structures according to implementation details
-  - Ensure all dependencies are properly installed and configured
-  - Run all tests to verify functionality
-  - Re-submit for quality gate review after implementation
-
-# Definition of Done Verification
-definition_of_done:
-  all_criteria_met: false
-  verification_notes: |
-    - Project structure not created
-    - Configuration files not properly set up
-    - Dependencies not installed as required
-    - Development server doesn't start (can't test)
-    - Code quality tools not integrated (can't test)
-    - Tests don't exist (can't verify)
-    - Documentation not updated with setup instructions (can't verify)
-    - Fresh environment setup not verified (can't verify)
-
-# Final Decision
-decision: |
-  FAIL - The project initialization story is not ready for acceptance.
-  Implementation must be completed according to all acceptance criteria
-  before this story can pass the quality gate.
+  immediate:
+    - action: 'Update test cleanup to use fs.rm with force + recursive and reintroduce strongly typed MCP helper interfaces.'
+      refs:
+        - tests/setup/test-setup.ts
+  future:
+    - action: 'Once helpers are typed again, consider expanding the TypeScript compilation test to include test sources.'
+      refs:
+        - tests/unit/tsc-compilation.test.ts
