@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Strudel Kit MCP server scaffold with TypeScript, Vitest, and xmcp integration",
   "license": "MIT",
-  "author": "Superbloom Labs",
+  "author": "Philliph Drummond",
   "type": "module",
   "main": "dist/server.js",
   "module": "dist/server.js",
