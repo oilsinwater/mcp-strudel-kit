@@ -45,6 +45,21 @@ npm run build
 npm run dev
 ```
 
+### BMAD Agent Management
+
+This project uses BMAD (Better Model Agent Development) for AI agent management:
+
+```bash
+# Refresh BMAD agents
+npm run bmad:refresh
+
+# List available BMAD agents
+npm run bmad:list
+
+# Validate BMAD configuration
+npm run bmad:validate
+```
+
 The server will start on `http://localhost:3000` with hot reloading enabled.
 
 ### Verify Installation
