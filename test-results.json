@@ -8,7 +8,7 @@
   "numFailedTests": 0,
   "numPendingTests": 0,
   "numTodoTests": 0,
-  "startTime": 1759875748077,
+  "startTime": 1760489974630,
   "success": true,
   "testResults": [
     {
@@ -30,8 +30,8 @@
           "failureMessages": []
         }
       ],
-      "startTime": 1759875748448,
-      "endTime": 1759875748451,
+      "startTime": 1760489974985,
+      "endTime": 1760489974988,
       "status": "passed",
       "message": "",
       "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/e2e/dev-workflow.test.ts"
@@ -39,75 +39,16 @@
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "package.json configuration"],
-          "fullName": " package.json configuration contains required scripts for development workflow",
+          "ancestorTitles": ["", "environment bootstrap"],
+          "fullName": " environment bootstrap loads settings from .env into process.env",
           "status": "passed",
-          "title": "contains required scripts for development workflow",
-          "duration": 4,
-          "failureMessages": []
-        },
-        {
-          "ancestorTitles": ["", "package.json configuration"],
-          "fullName": " package.json configuration enforces Node 20 runtime via engines field",
-          "status": "passed",
-          "title": "enforces Node 20 runtime via engines field",
-          "duration": 0,
+          "title": "loads settings from .env into process.env",
+          "duration": 7,
           "failureMessages": []
         }
       ],
-      "startTime": 1759875748529,
-      "endTime": 1759875748533,
-      "status": "passed",
-      "message": "",
-      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/unit/package-config.test.ts"
-    },
-    {
-      "assertionResults": [
-        {
-          "ancestorTitles": ["", "TypeScript project compilation"],
-          "fullName": " TypeScript project compilation compiles without emitting artifacts or diagnostics",
-          "status": "passed",
-          "title": "compiles without emitting artifacts or diagnostics",
-          "duration": 957,
-          "failureMessages": []
-        }
-      ],
-      "startTime": 1759875750780,
-      "endTime": 1759875751739,
-      "status": "passed",
-      "message": "",
-      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/unit/tsc-compilation.test.ts"
-    },
-    {
-      "assertionResults": [
-        {
-          "ancestorTitles": ["", "tsconfig path aliases"],
-          "fullName": " tsconfig path aliases exposes @ namespace mapping to src directories",
-          "status": "passed",
-          "title": "exposes @ namespace mapping to src directories",
-          "duration": 2,
-          "failureMessages": []
-        }
-      ],
-      "startTime": 1759875748403,
-      "endTime": 1759875748405,
-      "status": "passed",
-      "message": "",
-      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/unit/tsconfig-alias.test.ts"
-    },
-    {
-      "assertionResults": [
-        {
-          "ancestorTitles": ["", "environment loading"],
-          "fullName": " environment loading reads .env file and populates process.env variables",
-          "status": "passed",
-          "title": "reads .env file and populates process.env variables",
-          "duration": 2,
-          "failureMessages": []
-        }
-      ],
-      "startTime": 1759875748395,
-      "endTime": 1759875748398,
+      "startTime": 1760489975011,
+      "endTime": 1760489975018,
       "status": "passed",
       "message": "",
       "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/integration/environment-loading.test.ts"
@@ -123,11 +64,70 @@
           "failureMessages": []
         }
       ],
-      "startTime": 1759875748398,
-      "endTime": 1759875748400,
+      "startTime": 1760489975011,
+      "endTime": 1760489975013,
       "status": "passed",
       "message": "",
       "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/integration/server-startup.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "package.json configuration"],
+          "fullName": " package.json configuration contains required scripts for development workflow",
+          "status": "passed",
+          "title": "contains required scripts for development workflow",
+          "duration": 3,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "package.json configuration"],
+          "fullName": " package.json configuration enforces Node 20 runtime via engines field",
+          "status": "passed",
+          "title": "enforces Node 20 runtime via engines field",
+          "duration": 4,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1760489974976,
+      "endTime": 1760489974983,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/unit/package-config.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "TypeScript project compilation"],
+          "fullName": " TypeScript project compilation compiles without emitting artifacts or diagnostics",
+          "status": "passed",
+          "title": "compiles without emitting artifacts or diagnostics",
+          "duration": 783,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1760489976670,
+      "endTime": 1760489977453,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/unit/tsc-compilation.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "tsconfig path aliases"],
+          "fullName": " tsconfig path aliases exposes @ namespace mapping to src directories",
+          "status": "passed",
+          "title": "exposes @ namespace mapping to src directories",
+          "duration": 3,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1760489974971,
+      "endTime": 1760489974974,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/unit/tsconfig-alias.test.ts"
     }
   ]
 }
