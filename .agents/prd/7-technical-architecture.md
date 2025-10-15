@@ -60,11 +60,16 @@ strudel-kit-mcp-server/
 │       ├── fileSystem.ts          # File operations
 │       ├── process.ts             # Child process management
 │       └── cache.ts               # Response caching
+├── .agents/                       # Hidden documentation workspace (architecture, PRD shards, stories, QA)
+│   ├── architecture/              # Architecture shards
+│   ├── stories/                   # Epic and story specs
+│   ├── prd/                       # PRD shards
+│   ├── qa/                        # QA records and gates
+│   └── *.md                       # Top-level indices (architecture.md, prd.md, etc.)
 ├── tests/                         # Test suites
 │   ├── unit/                      # Unit tests
 │   ├── integration/               # Integration tests
 │   └── e2e/                       # End-to-end tests
-├── docs/                          # Documentation
 ├── config/                        # Configuration files
 └── package.json                   # Project configuration
 ```
