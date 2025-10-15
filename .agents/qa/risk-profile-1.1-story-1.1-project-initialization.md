@@ -1,27 +1,28 @@
 # Risk Profile: Story 1.1 - Project Initialization and Scaffolding
 
-**Story**: docs/stories/story-1.1-project-initialization.md  
+**Story**: .agents/stories/story-1.1-project-initialization.md  
 **Epic**: Foundation & Core Infrastructure  
 **Date**: 2025-09-24  
-**Assessed by**: Test Architect  
+**Assessed by**: Test Architect
 
 ## Risk Assessment Summary
 
 | Risk Category | Count | Highest Risk Level |
-|---------------|-------|-------------------|
-| Technical | 4 | High |
-| Schedule | 3 | Medium |
-| Quality | 3 | High |
-| Dependencies | 2 | Medium |
+| ------------- | ----- | ------------------ |
+| Technical     | 4     | High               |
+| Schedule      | 3     | Medium             |
+| Quality       | 3     | High               |
+| Dependencies  | 2     | Medium             |
 
 **Overall Risk Level**: HIGH  
-**Risk Score**: 7.2/10 (High Risk - Requires mitigation before implementation)  
+**Risk Score**: 7.2/10 (High Risk - Requires mitigation before implementation)
 
 ## Detailed Risk Analysis
 
 ### 1. Technical Risks
 
 #### 1.1. Framework Compatibility Risk
+
 - **Risk**: xmcp framework integration may have compatibility issues with current TypeScript/Node versions
 - **Probability**: Medium (4/5)
 - **Impact**: High (5/5)
@@ -31,6 +32,7 @@
 - **Owner**: Developer
 
 #### 1.2. Tooling Complexity Risk
+
 - **Risk**: Setting up complex tooling stack (TypeScript, ESLint, Prettier, Husky, etc.) may cause delays
 - **Probability**: Medium (4/5)
 - **Impact**: Medium (4/5)
@@ -40,6 +42,7 @@
 - **Owner**: Developer
 
 #### 1.3. Path Resolution Risk
+
 - **Risk**: TypeScript path aliases may not work consistently across different environments
 - **Probability**: Medium (3/5)
 - **Impact**: Medium (4/5)
@@ -49,6 +52,7 @@
 - **Owner**: Developer
 
 #### 1.4. Dependency Conflict Risk
+
 - **Risk**: Multiple dependencies may have conflicting requirements or cause bundle size issues
 - **Probability**: Medium (3/5)
 - **Impact**: Medium (3/5)
@@ -60,6 +64,7 @@
 ### 2. Schedule Risks
 
 #### 2.1. Underestimation Risk
+
 - **Risk**: Story estimated at 1-2 days but may take longer due to unforeseen issues
 - **Probability**: Medium (3/5)
 - **Impact**: Medium (3/5)
@@ -69,6 +74,7 @@
 - **Owner**: Scrum Master
 
 #### 2.2. Learning Curve Risk
+
 - **Risk**: Development team may need time to familiarize with xmcp framework
 - **Probability**: High (4/5)
 - **Impact**: Medium (3/5)
@@ -78,6 +84,7 @@
 - **Owner**: Developer
 
 #### 2.3. Environment Setup Risk
+
 - **Risk**: Team members may have inconsistent development environments
 - **Probability**: Medium (3/5)
 - **Impact**: Medium (3/5)
@@ -89,6 +96,7 @@
 ### 3. Quality Risks
 
 #### 3.1. Foundation Defect Risk
+
 - **Risk**: Defects in foundational setup will impact all subsequent development
 - **Probability**: Medium (3/5)
 - **Impact**: High (5/5)
@@ -98,6 +106,7 @@
 - **Owner**: QA
 
 #### 3.2. Test Coverage Risk
+
 - **Risk**: Insufficient test coverage of foundational components
 - **Probability**: Medium (4/5)
 - **Impact**: High (4/5)
@@ -107,6 +116,7 @@
 - **Owner**: QA
 
 #### 3.3. Configuration Drift Risk
+
 - **Risk**: Configuration files may diverge between development, test and production environments
 - **Probability**: Medium (3/5)
 - **Impact**: High (4/5)
@@ -118,6 +128,7 @@
 ### 4. Dependency Risks
 
 #### 4.1. Framework Instability Risk
+
 - **Risk**: xmcp framework may be unstable or undergo breaking changes during development
 - **Probability**: Medium (3/5)
 - **Impact**: High (4/5)
@@ -127,6 +138,7 @@
 - **Owner**: Technical Lead
 
 #### 4.2. Third-party Dependency Risk
+
 - **Risk**: Critical dependencies may become unmaintained or have security vulnerabilities
 - **Probability**: Medium (3/5)
 - **Impact**: Medium (4/5)
@@ -148,11 +160,12 @@ High Impact
      |_________________> Medium Probability
 Low        Low     High
 ```
-(* = High Risk Items)
+
+(\* = High Risk Items)
 
 ## Mitigation Priorities
 
-1. **Critical (Red Light)**: 
+1. **Critical (Red Light)**:
    - Framework Compatibility Risk (1.1)
    - Foundation Defect Risk (3.1)
    - Test Coverage Risk (3.2)
@@ -174,6 +187,7 @@ Low        Low     High
 ## Residual Risk
 
 Even with all mitigation strategies, some risk remains due to:
+
 - Uncertainty with new xmcp framework integration
 - Interdependency of foundational components
 - Limited historical data for similar implementations in this context
