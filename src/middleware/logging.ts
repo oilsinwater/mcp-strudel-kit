@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import type { LogLevel } from '@/core/config';
+import type { LogLevel } from '@/core/config.js';
 
 const LEVEL_PRIORITY: Record<LogLevel, number> = {
   debug: 10,

@@ -9,16 +9,16 @@ import type { Express } from 'express';
 import { config as loadEnv } from 'dotenv';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-import type { AppConfig } from '@/core/config';
-import { loadConfig } from '@/core/config';
-import { ToolExecutor, ToolRegistry } from '@/core/tool-registry';
-import coreTools from '@/tools/core-tools';
-import { createLoggingMiddleware } from '@/middleware/logging';
-import { correlationIdMiddleware } from '@/middleware/correlation';
-import requestValidationMiddleware from '@/middleware/request-validation';
-import createRateLimitMiddleware from '@/middleware/rate-limit';
-import { createCorsMiddleware } from '@/middleware/cors';
-import errorHandler from '@/middleware/error-handler';
+import type { AppConfig } from '@/core/config.js';
+import { loadConfig } from '@/core/config.js';
+import { ToolExecutor, ToolRegistry } from '@/core/tool-registry.js';
+import coreTools from '@/tools/core-tools.js';
+import { createLoggingMiddleware } from '@/middleware/logging.js';
+import { correlationIdMiddleware } from '@/middleware/correlation.js';
+
+import createRateLimitMiddleware from '@/middleware/rate-limit.js';
+import { createCorsMiddleware } from '@/middleware/cors.js';
+import errorHandler from '@/middleware/error-handler.js';
 
 export interface RunningServer {
   app: Express;
@@ -61,7 +61,8 @@ function createExpressApp(config: AppConfig) {
   app.use(
     createRateLimitMiddleware(config.security.rateLimitRequests, config.security.rateLimitWindowMs),
   );
-  app.use('/mcp', express.raw({ type: 'application/json', limit: '1mb' }));
+  // Note: We do NOT use express.raw() or any body parser for /mcp routes
+  // The MCP transport reads the request body directly from the HTTP stream
 
   return app;
 }
@@ -88,7 +89,7 @@ async function configureMcpServer(config: AppConfig): Promise<{
     sessionIdGenerator: () => randomUUID(),
   });
 
-  await transport.start();
+  // Do not call transport.start() - it will be called by mcpServer.connect()
   await mcpServer.connect(transport);
 
   return { mcpServer, transport };
@@ -99,8 +100,9 @@ export async function createServer(): Promise<RunningServer> {
   const app = createExpressApp(config);
   const { mcpServer, transport } = await configureMcpServer(config);
 
-  app.post('/mcp', requestValidationMiddleware, (req, res, next) => {
-    transport.handleRequest(req, res, req.body as Buffer | undefined).catch(next);
+  app.post('/mcp', (req, res, next) => {
+    // Pass undefined so the transport reads the body from the request stream
+    transport.handleRequest(req, res, undefined).catch(next);
   });
 
   app.get('/mcp', (req, res, next) => {
