@@ -368,7 +368,7 @@ strudel-kit-mcp-server/
 │       ├── fileSystem.ts      // File operations
 │       ├── process.ts         // Child process management
 │       └── cache.ts           // Response caching
-├── docs/                      // Documentation
+├── .agents/                   // Hidden workspace docs (architecture, PRD shards, stories, QA records)
 ├── tests/                     // Unit and integration tests
 ├── config/                    // Configuration files
 └── package.json               // Project configuration

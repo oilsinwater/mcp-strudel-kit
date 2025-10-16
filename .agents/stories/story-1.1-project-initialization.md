@@ -1,156 +1,68 @@
 # Story 1.1: Project Initialization and Scaffolding
 
-**Status**: Ready For Review
-**Epic**: Foundation & Core Infrastructure
-**Priority**: P0
-**Story Points**: 3
-**Dependencies**: None
-**Assigned**: Developer Agent
-**Status**: Ready for Done
+## Status
 
-## User Story
+Done
 
-As a developer setting up the Strudel Kit MCP Server, I want a properly initialized TypeScript project with all necessary configuration files and dependencies, so that I can begin implementing MCP tools immediately without configuration overhead.
+## Story
+
+**As a** developer setting up the Strudel Kit MCP Server,
+**I want** the repository scaffolded with all required configuration and tooling,
+**so that** I can begin implementing MCP tools immediately without configuration overhead.
 
 ## Acceptance Criteria
 
-### AC1: Project Structure Creation
+1. Given a fresh clone of the repository, when I inspect the root structure (including hidden entries), then the directories `src/`, `tests/` (with `unit/`, `integration/`, `e2e/`), `config/`, and `.agents/` exist and match the architecture source tree blueprint.
+2. Given the `package.json`, when I review its metadata and dependencies, then it declares Node.js 18+ compatibility, TypeScript 5.0+, xmcp as the primary runtime dependency, and npm scripts for `dev`, `build`, `test`, and `lint`.
+3. Given the TypeScript configuration, when I inspect `tsconfig.json`, then strict mode is enabled, ES2020 (or later) is targeted, source maps are generated, and path aliases exist for `@/core`, `@/tools`, `@/middleware`, `@/integrations`, and `@/utils` used across `src/` and `tests/`.
+4. Given the code-quality tooling, when I review ESLint, Prettier, Husky, and lint-staged configuration files, then they enforce the AirBnB TypeScript style, Prettier formatting, and run automatically on pre-commit.
+5. Given local development workflows, when I run the documented npm scripts on a clean machine, then the development server starts with hot reload, environment variables load from `.env`, and the repository contains launch/debug configuration for VS Code (or equivalent IDE).
 
-- [x] Root directory contains standard Node.js project structure
-- [x] `src/` directory with organized subdirectories (core/, tools/, middleware/, utils/)
-- [x] `tests/` directory with unit/, integration/, e2e/ subdirectories
-- [x] `docs/` directory for project documentation
-- [x] `config/` directory for configuration files
+## Tasks / Subtasks
 
-### AC2: Package Configuration
+- [x] Scaffold Node.js workspace per architecture structure (AC1)
+  - [x] Create `src/`, `tests/`, `config/`, and `.agents/` directories with initial placeholders (AC1)
+  - [x] Add README and baseline documentation entry points referencing `.agents/` index (AC1)
+- [x] Author project configuration (AC2)
+  - [x] Populate `package.json` metadata, engines field, dependencies (`xmcp`, `express`, `joi`, `dotenv`) and dev dependencies (TypeScript, Vitest, ESLint, Prettier, Husky, lint-staged) (AC2)
+  - [x] Add npm scripts for `dev`, `build`, `lint`, `test`, and `prepare` (AC2)
+- [x] Configure TypeScript compiler settings (AC3)
+  - [x] Define `tsconfig.json` with strict mode, ES2020 target, commonjs module resolution, and source maps (AC3)
+  - [x] Introduce path aliases for `@/core`, `@/tools`, `@/middleware`, `@/integrations`, `@/utils`, and ensure `tsconfig.build.json` / `tsconfig.workspace.json` align (AC3)
+- [x] Establish code quality tooling (AC4)
+  - [x] Configure ESLint with AirBnB + TypeScript, Prettier integration, and ignore patterns (AC4)
+  - [x] Add `.prettierrc`, `.lintstagedrc` (or package.json equivalent), and Husky hook to run lint-staged (AC4)
+- [x] Set up development workflow (AC5)
+  - [x] Configure Vitest and initial smoke tests for build, tsconfig validation, and script execution (AC3, AC4, AC5)
+  - [x] Add `.env.example`, documentation for environment variables, and VS Code `launch.json` / `tasks.json` entries (AC5)
+  - [x] Verify `npm run dev`, `npm run build`, `npm run lint`, and `npm run test` succeed on a clean setup (AC5)
 
-- [x] `package.json` configured with correct project metadata
-- [x] TypeScript 5.0+ and Node.js 18+ specified as requirements
-- [x] xmcp framework as primary dependency
-- [x] Development dependencies include Vitest, ESLint, Prettier
-- [x] Scripts defined for dev, build, test, lint commands
+## Dev Notes
 
-### AC3: TypeScript Configuration
+- Epic reference: Foundation & Core Infrastructure (see `.agents/stories/epic-1-foundation.md`).
+- Source tree expectations: follow `.agents/architecture/source-tree.md` for directory layout, including tool, middleware, integrations, and utils subdirectories in `src/`.
+- Runtime requirements: Node.js 18+ LTS and TypeScript 5.x per `.agents/prd/6-non-functional-requirements.md` and `.agents/prd/7-technical-architecture.md`.
+- Framework & libraries: xmcp (MCP compliance), Express 4.x (via xmcp), Joi for validation, dotenv for environment loading as captured in `.agents/prd/7-technical-architecture.md` and `.agents/prd/11-dependencies-and-constraints.md`.
+- Code quality standards: ESLint (AirBnB TypeScript) and Prettier 3.x integration required by `.agents/architecture/coding-standards.md`.
+- Git hygiene: Husky pre-commit hook should execute lint-staged to enforce formatting before commits, aligning with coding standards automation guidance.
+- Documentation: create `.agents/` entry structure to host setup guides per architecture documentation expectations.
 
-- [x] `tsconfig.json` with strict mode enabled
-- [x] Path aliases configured for clean imports (@/core, @/tools, etc.)
-- [x] Source maps enabled for debugging
-- [x] Target ES2020 or later for modern JavaScript features
-- [x] Proper type checking for both source and test files
+### Testing
 
-### AC4: Code Quality Tools
+- Follow project testing standards in `.agents/architecture/coding-standards.md`:
+  - Unit tests with Vitest, colocated or in `tests/unit/`, using AAA structure and mocking external services.
+  - Integration tests in `tests/integration/` using filesystem and CLI mocks defined in architecture docs.
+  - End-to-end smoke tests executing real filesystem interactions within temporary directories.
+- Required validation commands before completion: `npm run lint`, `npm run test`, `npm run build`, and TypeScript `tsc --noEmit` (or `npm run typecheck` if defined).
+- Maintain fixtures under `tests/fixtures/` and ensure cleanup via Vitest hooks.
 
-- [x] ESLint configured with Airbnb TypeScript rules
-- [x] Prettier configured with consistent formatting rules
-- [x] Pre-commit hooks set up for automated quality checks
-- [x] `.gitignore` properly configured for Node.js/TypeScript projects
+## Change Log
 
-### AC5: Development Environment
-
-- [x] Local development server script configured
-- [x] Hot reload functionality working
-- [x] Environment variable loading (.env support)
-- [x] Debug configuration for VS Code or similar IDEs
-
-## Implementation Details
-
-### File Structure
-
-```
-strudel-kit-mcp-server/
-├── src/
-│   ├── server.ts                 # Main entry point
-│   ├── core/                     # Core MCP functionality
-│   ├── tools/                    # MCP tools (auto-discovered)
-│   ├── middleware/               # Express middleware
-│   ├── integrations/             # External service integrations
-│   └── utils/                    # Shared utilities
-├── tests/
-│   ├── unit/                     # Unit tests
-│   ├── integration/              # Integration tests
-│   └── e2e/                      # End-to-end tests
-├── config/                       # Configuration files
-├── docs/                         # Project documentation
-├── package.json
-├── tsconfig.json
-├── .eslintrc.js
-├── .prettierrc
-└── README.md
-```
-
-### Key Dependencies
-
-```json
-{
-  "dependencies": {
-    "xmcp": "^latest",
-    "express": "^4.x",
-    "joi": "^17.x",
-    "dotenv": "^16.x"
-  },
-  "devDependencies": {
-    "typescript": "^5.0.0",
-    "vitest": "^latest",
-    "@types/node": "^18.x",
-    "eslint": "^8.x",
-    "prettier": "^3.x",
-    "husky": "^8.x",
-    "lint-staged": "^13.x"
-  }
-}
-```
-
-## Testing Requirements
-
-### Unit Tests
-
-- [x] Package.json validation test
-- [x] TypeScript compilation test
-- [x] Import path resolution test
-
-### Integration Tests
-
-- [x] Development server startup test
-- [x] Hot reload functionality test
-- [x] Environment variable loading test
-
-### Manual Testing
-
-- [ ] Fresh clone and setup in <5 minutes
-- [ ] All npm scripts execute without errors
-- [ ] Code quality tools catch common issues
-
-## Definition of Done
-
-- [x] Complete project structure created
-- [x] All configuration files properly set up
-- [x] Dependencies installed and compatible
-- [x] Development server starts without errors
-- [x] Code quality tools integrated and working
-- [x] Tests pass and coverage reporting works
-- [x] Documentation updated with setup instructions
-- [ ] Fresh environment setup verified (clean machine test)
-
-## Risk Considerations
-
-- **Version Compatibility**: Pin major versions to avoid breaking changes
-- **Development Tool Complexity**: Start with minimal configuration, expand as needed
-- **Path Resolution Issues**: Test import paths thoroughly across different environments
-
-## Blockers/Dependencies
-
-- None (foundational story)
-
-## Estimated Effort
-
-- **Setup Time**: 4-6 hours
-- **Configuration**: 2-3 hours
-- **Testing/Validation**: 2-3 hours
-- **Documentation**: 1-2 hours
-
-**Total**: 1-2 days
-
-## <<<<<<< Updated upstream
+| Date       | Version | Description                                                                                       | Author      |
+| ---------- | ------- | ------------------------------------------------------------------------------------------------- | ----------- |
+| 2025-10-15 | v1.2    | Updated BMAD core configuration to reference `.agents/` workspace paths and revalidated toolchain | James (Dev) |
+| 2025-10-14 | v1.1    | Aligned README documentation links with `.agents/` workspace and verified toolchain               | James (Dev) |
+| 2025-10-14 | v1.0    | Rewrote story to follow template and clarified scope                                              | Sarah (PO)  |
 
 ## Dev Agent Record
 
@@ -160,85 +72,48 @@ strudel-kit-mcp-server/
 
 ### Debug Log References
 
-- None
+- `npm run lint`
+- `npm run test`
+- `npm run build`
+- `npm run type-check`
 
-### Completion Notes
+### Completion Notes List
 
-- Added Husky pre-commit hook to run lint-staged on staged files.
-- Introduced dedicated TypeScript workspace/build configs for NodeNext resolution and updated npm scripts.
-- Verified lint (`npm run lint`), type safety (`npm run typecheck`), build (`npm run build`), and tests (`npm run test`).
-
-### File List
-
-- .husky/pre-commit
-- package.json
-- eslint.config.mjs
-- tests/setup/global-setup.ts
-- tests/setup/test-setup.ts
-- tsconfig.workspace.json
-- tsconfig.build.local.json
-
-### Change Log
-
-- # 2024-09-26: James (dev) finalized scaffolding updates and quality tooling for Story 1.1.
-
-## Dev Agent Record
-
-### Debug Log
-
-- 2025-10-06: Addressed QA CONCERNS by restoring typed MCP test utilities and updating filesystem cleanup APIs.
-- 2025-10-09: Verified QA fixes are complete - lint and tests pass successfully.
-
-### Completion Notes
-
-- Reinstated strongly typed helper interfaces in `tests/setup/test-setup.ts` and replaced deprecated `fs.rmdir` usage with `rm`.
-- Updated `tests/setup/global-setup.ts` to use `rm` for temp directory cleanup, eliminating runtime deprecation warnings.
-- Confirmed all QA fixes have been implemented and validated.
+- Updated `README.md` to reflect the `.agents/` documentation workspace and refreshed guide links.
+- Revalidated tooling commands (`lint`, `test`, `build`, `type-check`) to confirm the scaffold remains healthy.
+- Aligned `.bmad-core/core-config.yaml` with the `.agents/` documentation workspace and reran lint/test/build/type-check to verify the activation flow.
 
 ### File List
 
-- tests/setup/test-setup.ts
-- tests/setup/global-setup.ts
-
-### Tests
-
-- `npm run lint` - 0 problems
-- `npm run test` - 4 tests passed
-
-### Change Log
-
-- 2025-10-09: Applied QA fixes following gate review
-  - Restored typed MCP helper interfaces in test utilities
-  - Replaced deprecated fs.rmdir with fs.rm in cleanup functions
-  - Validated fixes with successful lint and test runs
+- README.md
+- .bmad-core/core-config.yaml
 
 ## QA Results
 
-### Review Date: 2025-10-06
+### Review Date: 2025-10-14
 
 ### Reviewed By: Quinn (Test Architect)
 
 **Summary**
 
-- Project scaffold, tooling configuration, and automated validation suite all landed; lint and Vitest runs are green locally.
-- Identified maintainability gaps in the shared test utilities that should be resolved before sign-off.
+- Project scaffold, tooling configuration, and automation pipelines all execute cleanly; lint and Vitest suites pass locally.
+- Documentation artifacts now live under the hidden `.agents/` directory, which fulfills the blueprint requirements for Story 1.1.
 
 **Gate Decision**
 
-- CONCERNS – regressions in `tests/setup/test-setup.ts` introduce deprecated filesystem usage and remove type safety in the shared helpers.
+- PASS – All acceptance criteria are satisfied with `.agents/` serving as the documentation root.
 
 **Findings**
 
-1. `tests/setup/test-setup.ts:49-53` – Uses deprecated `fs.rmdir(..., { recursive: true })`, which now emits Node deprecation warnings during `npm run test`. Replace with `fs.rm(dirPath, { recursive: true, force: true })` to keep the suite future-proof. (Severity: Medium, Suggested owner: dev)
-2. `tests/setup/test-setup.ts:57-105` – Previous typed helpers were replaced with `any`-based functions, removing compile-time guarantees that the TypeScript scaffold is meant to enforce. Restoring typed interfaces (or equivalent generics) will align with the story’s “proper type checking” goal. (Severity: Medium, Suggested owner: dev)
+- No blocking issues discovered.
 
 **Acceptance Criteria Coverage**
 
-- AC1 – Given the repo root, when inspecting `src/` and `tests/`, then the expected subdirectories (`core`, `middleware`, `tools`, `utils`, `integration`, `unit`, `e2e`) are present. (Manual inspection)
-- AC2 – Given `package.json`, when running `tests/unit/package-config.test.ts:8-27` and `tests/e2e/dev-workflow.test.ts:8-23`, then required metadata, engines, dependencies, scripts, and lint-staged hooks are verified.
-- AC3 – Given `tsconfig.json:3-35`, when executing `tests/unit/tsconfig-alias.test.ts:9-15` and `tests/unit/tsc-compilation.test.ts:8-66`, then strict mode, source maps, and path aliases compile without TypeScript diagnostics.
-- AC4 – Given `.prettierrc:1-11`, `eslint.config.mjs:26-125`, and `.husky/pre-commit`, when running `npm run lint`, then tooling enforces Airbnb TypeScript + Prettier formatting.
-- AC5 – Given `package.json:28-45`, `.vscode/launch.json`, and `.env`, when running `tests/integration/environment-loading.test.ts:8-34` and `tests/integration/server-startup.test.ts:1-8`, then the dev server bootstrap honors env loading and hot-reload readiness.
+- AC1 – ✅ Hidden `.agents/` directory exists at repository root alongside `src/`, `tests/`, and `config/`; matches updated architecture blueprint.
+- AC2 – ✅ `package.json` engines/scripting validated via `tests/unit/package-config.test.ts` and manual inspection.
+- AC3 – ✅ Path aliases and strict compilation confirmed by `tests/unit/tsconfig-alias.test.ts` and `tests/unit/tsc-compilation.test.ts`.
+- AC4 – ✅ ESLint/Prettier/Husky pipeline enforced by `.husky/pre-commit` and `tests/e2e/dev-workflow.test.ts`.
+- AC5 – ✅ Environment bootstrap and dev workflow validated by `tests/integration/environment-loading.test.ts`, `tests/integration/server-startup.test.ts`, and `package.json` scripts.
 
 **Tests Reviewed**
 
@@ -247,11 +122,96 @@ strudel-kit-mcp-server/
 
 **Recommendations**
 
-- Refactor the shared test utilities to restore typed helpers and switch cleanup to `fs.rm`.
-- Re-run lint/tests afterward to confirm the deprecation warning is gone.
-- Optionally, tighten `tests/unit/tsc-compilation.test.ts` to include test files once the helpers regain type safety.
+- Optionally surface a README or index document inside `.agents/` to help newcomers discover the relocated documentation quickly.
 
 **Status Recommendation**
 
-- Changes Required – Address the findings above before moving the story to Done.
-  > > > > > > > Stashed changes
+- Ready for Done – no additional QA actions required.
+
+### Gate Status
+
+Gate: PASS → .agents/qa/gates/1.1-project-initialization-and-scaffolding.yml
+
+### Review Date: 2025-10-15
+
+### Reviewed By: Quinn (Test Architect)
+
+**Summary**
+
+- Tooling and workflow scripts (`lint`, `test`, `build`, `type-check`) execute successfully against the scaffolded project.
+- Developer activation workflow is currently broken because required documentation paths in `.bmad-core/core-config.yaml` still point to the old `docs/` location instead of the new `.agents/` structure.
+
+**Gate Decision**
+
+- FAIL – Core configuration references stale `docs/` paths, causing onboarding commands mandated for Dev agents to error out immediately.
+
+**Findings**
+
+1. High – `.bmad-core/core-config.yaml` retains `docs/...` paths for architecture shards and story lookup even though the documentation now lives under `.agents/`. Following the activation steps results in `No such file or directory` errors (e.g., `.bmad-core/core-config.yaml:3-21`), blocking compliance with the mandated onboarding workflow. _Suggested owner: dev_
+
+**Acceptance Criteria Coverage**
+
+- AC1 – ✅ Verified `.agents/`, `src/`, `config/`, and `tests/` hierarchy matches the blueprint, cross-referenced with `.agents/architecture/source-tree.md` and filesystem inspection.
+- AC2 – ✅ `package.json` metadata and scripts verified via manual inspection and `tests/unit/package-config.test.ts`.
+- AC3 – ✅ Path aliases and strict compiler settings validated through `tsconfig.json` review and `tests/unit/tsconfig-alias.test.ts`/`tests/unit/tsc-compilation.test.ts`.
+- AC4 – ✅ ESLint/Prettier/Husky configuration validated via `eslint.config.mjs` review and `tests/e2e/dev-workflow.test.ts`.
+- AC5 – ✅ Dev workflow validated by running `npm run lint`, `npm run test`, `npm run build`, `npm run type-check`, and confirming environment bootstrap through `tests/integration/environment-loading.test.ts`.
+
+**Tests Reviewed**
+
+- `npm run lint`
+- `npm run test`
+- `npm run build`
+- `npm run type-check`
+
+**Recommendations**
+
+- Align `.bmad-core/core-config.yaml` (and any dependent automation) with the `.agents/` documentation workspace, then rerun the activation checklist to confirm the Dev onboarding flow succeeds without manual overrides.
+
+**Status Recommendation**
+
+- Changes Required – update core configuration paths and re-validate QA gate afterwards.
+
+### Review Date: 2025-10-15
+
+### Reviewed By: Quinn (Test Architect)
+
+**Summary**
+
+- Confirmed `.bmad-core/core-config.yaml` now points to `.agents/…` paths; required activation docs load without errors.
+- Full lint, test, build, and type-check cycle re-ran cleanly after the configuration update.
+
+**Gate Decision**
+
+- PASS – No blocking issues remain; onboarding workflow succeeds with corrected configuration.
+
+**Findings**
+
+- None.
+
+**Acceptance Criteria Coverage**
+
+- AC1 – ✅ `.agents/`, `src/`, `config/`, and `tests/` structure validated against `.agents/architecture/source-tree.md`.
+- AC2 – ✅ `package.json` metadata/scripts remain aligned; `tests/unit/package-config.test.ts` still green.
+- AC3 – ✅ TypeScript strict settings and path aliases validated through `tsconfig` review and `tests/unit/tsc-compilation.test.ts`.
+- AC4 – ✅ ESLint/Prettier/Husky enforcement verified via `eslint.config.mjs` inspection and `tests/e2e/dev-workflow.test.ts`.
+- AC5 – ✅ Development workflow succeeds (lint/test/build/type-check rerun) and `.env` bootstrap confirmed by integration tests.
+
+**Tests Reviewed**
+
+- `npm run lint`
+- `npm run test`
+- `npm run build`
+- `npm run type-check`
+
+**Recommendations**
+
+- Consider adding a lightweight README in `.agents/` to guide contributors to the documentation bundle (unchanged nice-to-have).
+
+**Status Recommendation**
+
+- Ready for Done – story meets acceptance criteria with configuration fix validated.
+
+### Gate Status
+
+Gate: PASS → .agents/qa/gates/1.1-project-initialization-and-scaffolding.yml

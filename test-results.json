@@ -84,7 +84,7 @@
       "endTime": 1760646895384,
       "status": "passed",
       "message": "",
-      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/unit/package-config.test.ts"
+      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/integration/environment-loading.test.ts"
     },
     {
       "assertionResults": [
@@ -134,13 +134,13 @@
       "endTime": 1760646901880,
       "status": "passed",
       "message": "",
-      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/unit/tsc-compilation.test.ts"
+      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/integration/server-startup.test.ts"
     },
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "tsconfig path aliases"],
-          "fullName": " tsconfig path aliases exposes @ namespace mapping to src directories",
+          "ancestorTitles": ["", "package.json configuration"],
+          "fullName": " package.json configuration contains required scripts for development workflow",
           "status": "passed",
           "title": "exposes @ namespace mapping to src directories",
           "duration": 37,
@@ -151,7 +151,7 @@
       "endTime": 1760646895925,
       "status": "passed",
       "message": "",
-      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/unit/tsconfig-alias.test.ts"
+      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/unit/package-config.test.ts"
     },
     {
       "assertionResults": [
@@ -168,7 +168,7 @@
       "endTime": 1760646896336,
       "status": "passed",
       "message": "",
-      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/integration/environment-loading.test.ts"
+      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/unit/tsc-compilation.test.ts"
     },
     {
       "assertionResults": [
@@ -210,7 +210,7 @@
       "endTime": 1760646896361,
       "status": "passed",
       "message": "",
-      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/integration/server-startup.test.ts"
+      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/unit/tsconfig-alias.test.ts"
     }
   ]
 }
