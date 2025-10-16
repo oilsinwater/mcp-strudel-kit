@@ -92,15 +92,15 @@ Enable 100,000+ scientific researchers globally to create sophisticated research
 
 ### 4.2 User Stories
 
-|Priority|User Story|Acceptance Criteria|
-|---|---|---|
-|P0|As a researcher using Claude, I want to create a new scientific application with one MCP tool call|Tool generates complete project structure with Strudel Kit components and data integration|
-|P0|As a researcher, I want to add data visualization workflows through natural language|"Add temperature trend visualization for NetCDF data" creates functional component with proper schema inference|
-|P0|As a researcher, I want to connect scientific datasets without coding|Tool handles CSV, JSON, HDF5, NetCDF formats with automatic schema validation and error recovery|
-|P0|As a developer, I want custom tools auto-discovered without configuration|New TypeScript file in `src/tools/` extending BaseMCPTool automatically registers and becomes available|
-|P1|As a researcher, I want to customize UI components for my domain|Natural language modifications to Strudel Kit components with theme and layout adjustments|
-|P1|As a platform team, I want to deploy applications with enterprise security|JWT middleware, CORS configuration, rate limiting, and HTTPS enforcement available|
-|P2|As a team lead, I want to manage user access and project collaboration|Role-based access control, project sharing, and team management through MCP tools|
+| Priority | User Story                                                                                         | Acceptance Criteria                                                                                             |
+| -------- | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| P0       | As a researcher using Claude, I want to create a new scientific application with one MCP tool call | Tool generates complete project structure with Strudel Kit components and data integration                      |
+| P0       | As a researcher, I want to add data visualization workflows through natural language               | "Add temperature trend visualization for NetCDF data" creates functional component with proper schema inference |
+| P0       | As a researcher, I want to connect scientific datasets without coding                              | Tool handles CSV, JSON, HDF5, NetCDF formats with automatic schema validation and error recovery                |
+| P0       | As a developer, I want custom tools auto-discovered without configuration                          | New TypeScript file in `src/tools/` extending BaseMCPTool automatically registers and becomes available         |
+| P1       | As a researcher, I want to customize UI components for my domain                                   | Natural language modifications to Strudel Kit components with theme and layout adjustments                      |
+| P1       | As a platform team, I want to deploy applications with enterprise security                         | JWT middleware, CORS configuration, rate limiting, and HTTPS enforcement available                              |
+| P2       | As a team lead, I want to manage user access and project collaboration                             | Role-based access control, project sharing, and team management through MCP tools                               |
 
 ---
 
@@ -120,12 +120,12 @@ Enable 100,000+ scientific researchers globally to create sophisticated research
 
 - **Description**: Integrate scientific workflows into existing projects with data binding
 - **Supported Flows**:
-    - explore-data: Interactive dataset browsers with filtering and search
-    - compare-data: Multi-dataset comparison tools with statistical analysis
-    - contribute-data: Research data submission portals with validation
-    - monitor-activities: Real-time monitoring dashboards with alerting
-    - run-computation: Scientific computing interfaces with job management
-    - search-data-repositories: Database search tools with federated queries
+  - explore-data: Interactive dataset browsers with filtering and search
+  - compare-data: Multi-dataset comparison tools with statistical analysis
+  - contribute-data: Research data submission portals with validation
+  - monitor-activities: Real-time monitoring dashboards with alerting
+  - run-computation: Scientific computing interfaces with job management
+  - search-data-repositories: Database search tools with federated queries
 - **Inputs**: Task flow type, project context, configuration parameters, data source mappings
 - **Outputs**: Integrated React components with proper TypeScript definitions and data bindings
 - **Error Handling**: Graceful degradation, rollback on failure, detailed error messages
@@ -134,10 +134,10 @@ Enable 100,000+ scientific researchers globally to create sophisticated research
 
 - **Description**: Modify scientific UI components with theme and layout control
 - **Capabilities**:
-    - Component property modification with type validation
-    - Theme customization (colors, typography, spacing)
-    - Layout adjustments (grid systems, responsive design)
-    - Accessibility compliance (ARIA labels, keyboard navigation)
+  - Component property modification with type validation
+  - Theme customization (colors, typography, spacing)
+  - Layout adjustments (grid systems, responsive design)
+  - Accessibility compliance (ARIA labels, keyboard navigation)
 - **Component Library**: Full Strudel Kit component access with documentation integration
 - **Validation**: Component compatibility, theme consistency, accessibility standards
 
@@ -147,45 +147,45 @@ Enable 100,000+ scientific researchers globally to create sophisticated research
 - **Supported Formats**: CSV, JSON, HDF5, NetCDF with extensible parser architecture
 - **Connection Types**: File upload, REST API integration, real-time WebSocket streams
 - **Features**:
-    - Automatic schema inference with confidence scoring
-    - Data validation with detailed error reporting
-    - Connection health monitoring and retry logic
-    - Data transformation pipelines for format normalization
+  - Automatic schema inference with confidence scoring
+  - Data validation with detailed error reporting
+  - Connection health monitoring and retry logic
+  - Data transformation pipelines for format normalization
 - **Security**: Input sanitization, file size limits, malicious content detection
 
 #### 5.1.5 generate-workflow
 
 - **Description**: Create multi-step analysis pipelines with dependency management
 - **Features**:
-    - Workflow orchestration with DAG visualization
-    - Step dependency management and parallel execution
-    - Export capabilities (JSON, YAML, visual diagrams)
-    - Version control integration for workflow evolution
+  - Workflow orchestration with DAG visualization
+  - Step dependency management and parallel execution
+  - Export capabilities (JSON, YAML, visual diagrams)
+  - Version control integration for workflow evolution
 - **Output**: Complete workflow configuration with UI components and execution engine
 - **Integration**: Compatible with existing scientific computing frameworks (Jupyter, Dask)
 
 ### 5.2 Framework Architecture Requirements
 
-|Component|Description|Priority|Implementation|
-|---|---|---|---|
-|Tool Registry|Auto-discovery of tools in `src/tools/` directory|P0|File system scanning, TypeScript reflection, hot reloading support|
-|MCP Gateway|JSON-RPC 2.0 compliant request handling|P0|Express.js middleware, request validation, response formatting|
-|Context Manager|Execution context for stateful tool operations|P0|Project state management, cleanup handlers, error boundaries|
-|CLI Integration|Strudel Kit CLI subprocess management|P0|Child process wrapper, output parsing, error translation|
-|Data Parser Engine|Extensible parsing for scientific formats|P0|Plugin architecture, schema inference, validation pipeline|
-|Security Middleware|Authentication, authorization, rate limiting|P1|JWT handling, CORS configuration, request sanitization|
-|Caching Layer|Response caching and optimization|P1|In-memory cache, TTL management, cache invalidation|
+| Component           | Description                                       | Priority | Implementation                                                     |
+| ------------------- | ------------------------------------------------- | -------- | ------------------------------------------------------------------ |
+| Tool Registry       | Auto-discovery of tools in `src/tools/` directory | P0       | File system scanning, TypeScript reflection, hot reloading support |
+| MCP Gateway         | JSON-RPC 2.0 compliant request handling           | P0       | Express.js middleware, request validation, response formatting     |
+| Context Manager     | Execution context for stateful tool operations    | P0       | Project state management, cleanup handlers, error boundaries       |
+| CLI Integration     | Strudel Kit CLI subprocess management             | P0       | Child process wrapper, output parsing, error translation           |
+| Data Parser Engine  | Extensible parsing for scientific formats         | P0       | Plugin architecture, schema inference, validation pipeline         |
+| Security Middleware | Authentication, authorization, rate limiting      | P1       | JWT handling, CORS configuration, request sanitization             |
+| Caching Layer       | Response caching and optimization                 | P1       | In-memory cache, TTL management, cache invalidation                |
 
 ### 5.3 Development Tools Integration
 
-|Tool Category|Requirement|Implementation|Priority|
-|---|---|---|---|
-|TypeScript Support|Strict mode compliance, full type definitions|TSConfig with strict settings, comprehensive .d.ts files|P0|
-|Testing Framework|Vitest with 80% coverage minimum|Unit, integration, and E2E test suites|P0|
-|Code Quality|ESLint with Airbnb TypeScript rules, Prettier formatting|Automated linting, pre-commit hooks|P0|
-|Development Experience|Hot reloading, source maps, debugging support|HMR integration, development middleware|P0|
-|Build System|Fast compilation with ESBuild/SWC|Production builds < 30 seconds|P0|
-|Documentation|API documentation generation, example integration|JSDoc extraction, interactive examples|P1|
+| Tool Category          | Requirement                                              | Implementation                                           | Priority |
+| ---------------------- | -------------------------------------------------------- | -------------------------------------------------------- | -------- |
+| TypeScript Support     | Strict mode compliance, full type definitions            | TSConfig with strict settings, comprehensive .d.ts files | P0       |
+| Testing Framework      | Vitest with 80% coverage minimum                         | Unit, integration, and E2E test suites                   | P0       |
+| Code Quality           | ESLint with Airbnb TypeScript rules, Prettier formatting | Automated linting, pre-commit hooks                      | P0       |
+| Development Experience | Hot reloading, source maps, debugging support            | HMR integration, development middleware                  | P0       |
+| Build System           | Fast compilation with ESBuild/SWC                        | Production builds < 30 seconds                           | P0       |
+| Documentation          | API documentation generation, example integration        | JSDoc extraction, interactive examples                   | P1       |
 
 ---
 
@@ -372,24 +372,24 @@ graph TB
 
 ### 8.1 Technical Metrics
 
-|Metric|Baseline|30 Days|90 Days|180 Days|
-|---|---|---|---|---|
-|Test Coverage|80%|85%|90%|95%|
-|Build Success Rate|95%|98%|99%|99.5%|
-|Tool Execution Time (p95)|<500ms|<400ms|<300ms|<250ms|
-|Memory Usage (baseline)|<512MB|<400MB|<350MB|<300MB|
-|Hot Reload Performance|<100ms|<75ms|<50ms|<25ms|
+| Metric                    | Baseline | 30 Days | 90 Days | 180 Days |
+| ------------------------- | -------- | ------- | ------- | -------- |
+| Test Coverage             | 80%      | 85%     | 90%     | 95%      |
+| Build Success Rate        | 95%      | 98%     | 99%     | 99.5%    |
+| Tool Execution Time (p95) | <500ms   | <400ms  | <300ms  | <250ms   |
+| Memory Usage (baseline)   | <512MB   | <400MB  | <350MB  | <300MB   |
+| Hot Reload Performance    | <100ms   | <75ms   | <50ms   | <25ms    |
 
 ### 8.2 Adoption Metrics
 
-|Metric|Target (30 days)|Target (90 days)|Target (180 days)|
-|---|---|---|---|
-|GitHub Stars|100|500|1,000+|
-|NPM Downloads/month|500|2,500|10,000+|
-|Active Contributors|5|20|50+|
-|Community PRs|10|50|200+|
-|Custom Tools Created|25|150|500+|
-|Generated Applications|100|1,000|5,000+|
+| Metric                 | Target (30 days) | Target (90 days) | Target (180 days) |
+| ---------------------- | ---------------- | ---------------- | ----------------- |
+| GitHub Stars           | 100              | 500              | 1,000+            |
+| NPM Downloads/month    | 500              | 2,500            | 10,000+           |
+| Active Contributors    | 5                | 20               | 50+               |
+| Community PRs          | 10               | 50               | 200+              |
+| Custom Tools Created   | 25               | 150              | 500+              |
+| Generated Applications | 100              | 1,000            | 5,000+            |
 
 ### 8.3 Quality Metrics
 
@@ -412,6 +412,7 @@ graph TB
 ### Phase 1: Core Foundation (Weeks 1-4)
 
 **Weeks 1-2: Architecture Setup**
+
 - xmcp server foundation with TypeScript strict mode
 - Tool registry with auto-discovery mechanism
 - Basic middleware (logging, error handling, validation)
@@ -419,6 +420,7 @@ graph TB
 - Vitest testing framework setup with initial test suite
 
 **Weeks 3-4: Essential Tools**
+
 - add-task-flow implementation (2-3 core scientific flows)
 - configure-data-source with CSV/JSON support
 - Context manager for stateful operations
@@ -428,6 +430,7 @@ graph TB
 ### Phase 2: Complete Platform (Weeks 5-8)
 
 **Weeks 5-6: Full Tool Suite**
+
 - Complete all 6 scientific task flows in add-task-flow
 - customize-components with theme and layout support
 - generate-workflow with pipeline orchestration
@@ -435,6 +438,7 @@ graph TB
 - Security middleware (JWT, rate limiting, CORS)
 
 **Weeks 7-8: Production Readiness**
+
 - Performance optimization and caching layer
 - Comprehensive test coverage (unit, integration, E2E)
 - Production deployment configurations
@@ -444,12 +448,14 @@ graph TB
 ### Phase 3: Community Growth (Weeks 9-12+)
 
 **Weeks 9-10: Community Foundation**
+
 - Plugin architecture for custom tools
 - Advanced data processing capabilities
 - Integration examples for popular scientific frameworks
 - Community feedback integration and roadmap development
 
 **Weeks 11-12+: Ecosystem Development**
+
 - Domain-specific tool collections
 - Enterprise features (team management, advanced security)
 - Performance monitoring and analytics
@@ -459,15 +465,15 @@ graph TB
 
 ## 10. Risks and Mitigations
 
-|Risk|Impact|Probability|Mitigation Strategy|
-|---|---|---|---|
-|Low community adoption|High|Medium|Targeted outreach to scientific conferences, research institutions, and developer communities. Create compelling demos and case studies.|
-|xmcp framework limitations|High|Low|Maintain close relationship with xmcp maintainers, contribute upstream improvements, develop compatibility layers as needed.|
-|Strudel Kit API breaking changes|Medium|Medium|Version pinning with compatibility matrix, automated migration tools, comprehensive integration tests.|
-|Security vulnerabilities in dependencies|High|Medium|Automated dependency scanning, monthly security updates, responsible disclosure process, security-focused code reviews.|
-|Performance bottlenecks with large datasets|Medium|Medium|Streaming data processing, memory profiling, caching strategies, horizontal scaling architecture.|
-|TypeScript ecosystem changes|Low|Low|Stay current with LTS versions, gradual migration strategies, maintain backward compatibility.|
-|Complex error debugging in AI interactions|Medium|High|Structured error messages, comprehensive logging, debugging tools, clear troubleshooting documentation.|
+| Risk                                        | Impact | Probability | Mitigation Strategy                                                                                                                      |
+| ------------------------------------------- | ------ | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Low community adoption                      | High   | Medium      | Targeted outreach to scientific conferences, research institutions, and developer communities. Create compelling demos and case studies. |
+| xmcp framework limitations                  | High   | Low         | Maintain close relationship with xmcp maintainers, contribute upstream improvements, develop compatibility layers as needed.             |
+| Strudel Kit API breaking changes            | Medium | Medium      | Version pinning with compatibility matrix, automated migration tools, comprehensive integration tests.                                   |
+| Security vulnerabilities in dependencies    | High   | Medium      | Automated dependency scanning, monthly security updates, responsible disclosure process, security-focused code reviews.                  |
+| Performance bottlenecks with large datasets | Medium | Medium      | Streaming data processing, memory profiling, caching strategies, horizontal scaling architecture.                                        |
+| TypeScript ecosystem changes                | Low    | Low         | Stay current with LTS versions, gradual migration strategies, maintain backward compatibility.                                           |
+| Complex error debugging in AI interactions  | Medium | High        | Structured error messages, comprehensive logging, debugging tools, clear troubleshooting documentation.                                  |
 
 ---
 

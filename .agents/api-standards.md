@@ -20,25 +20,31 @@ All MCP communication follows the JSON-RPC 2.0 specification exactly:
   "method": "tools/execute",
   "params": {
     "tool": "tool-name",
-    "input": { /* tool-specific parameters */ }
+    "input": {
+      /* tool-specific parameters */
+    }
   },
   "id": "unique-request-id"
 }
 ```
 
 **Success Response**:
+
 ```json
 {
   "jsonrpc": "2.0",
   "result": {
     "success": true,
-    "output": { /* tool-specific output */ }
+    "output": {
+      /* tool-specific output */
+    }
   },
   "id": "unique-request-id"
 }
 ```
 
 **Error Response**:
+
 ```json
 {
   "jsonrpc": "2.0",
@@ -56,17 +62,17 @@ All MCP communication follows the JSON-RPC 2.0 specification exactly:
 
 ### Error Code Standards
 
-| Code | Category | Description | Usage |
-|------|----------|-------------|-------|
-| -32700 | Parse Error | Invalid JSON | Malformed request |
-| -32600 | Invalid Request | Invalid request object | Missing required fields |
-| -32601 | Method Not Found | Tool not found | Unknown tool name |
-| -32602 | Invalid Params | Invalid tool parameters | Parameter validation failed |
-| -32603 | Internal Error | Server internal error | Unexpected server failure |
-| -32000 | Tool Execution Error | Tool-specific failure | Tool logic error |
-| -32001 | Tool Validation Error | Input validation failed | Parameter schema violation |
-| -32002 | Tool Timeout Error | Execution timeout | Tool exceeded time limit |
-| -32003 | Resource Error | Resource unavailable | File system, network issues |
+| Code   | Category              | Description             | Usage                       |
+| ------ | --------------------- | ----------------------- | --------------------------- |
+| -32700 | Parse Error           | Invalid JSON            | Malformed request           |
+| -32600 | Invalid Request       | Invalid request object  | Missing required fields     |
+| -32601 | Method Not Found      | Tool not found          | Unknown tool name           |
+| -32602 | Invalid Params        | Invalid tool parameters | Parameter validation failed |
+| -32603 | Internal Error        | Server internal error   | Unexpected server failure   |
+| -32000 | Tool Execution Error  | Tool-specific failure   | Tool logic error            |
+| -32001 | Tool Validation Error | Input validation failed | Parameter schema violation  |
+| -32002 | Tool Timeout Error    | Execution timeout       | Tool exceeded time limit    |
+| -32003 | Resource Error        | Resource unavailable    | File system, network issues |
 
 ## Tool Implementation Standards
 
@@ -105,16 +111,16 @@ export class CreateProjectTool extends BaseMCPTool<CreateProjectInput, CreatePro
         name: {
           type: 'string',
           description: 'Project name (alphanumeric, hyphens, underscores only)',
-          pattern: '^[a-zA-Z0-9_-]+$'
+          pattern: '^[a-zA-Z0-9_-]+$',
         },
         domain: {
           type: 'string',
           enum: ['astronomy', 'biology', 'chemistry', 'physics', 'general'],
-          description: 'Scientific domain for optimized component selection'
-        }
+          description: 'Scientific domain for optimized component selection',
+        },
       },
-      required: ['name']
-    }
+      required: ['name'],
+    },
   };
 
   async execute(input: CreateProjectInput): Promise<CreateProjectOutput> {
@@ -165,15 +171,12 @@ inputSchema: {
 ```typescript
 // Validation error response pattern
 if (!isValidProjectName(input.name)) {
-  throw new ToolValidationError(
-    'Invalid project name',
-    {
-      field: 'name',
-      value: input.name,
-      constraint: 'Must be 3-50 characters, alphanumeric with hyphens/underscores',
-      suggestion: 'Try: "my-research-project" or "data_analysis_tool"'
-    }
-  );
+  throw new ToolValidationError('Invalid project name', {
+    field: 'name',
+    value: input.name,
+    constraint: 'Must be 3-50 characters, alphanumeric with hyphens/underscores',
+    suggestion: 'Try: "my-research-project" or "data_analysis_tool"',
+  });
 }
 ```
 
@@ -251,6 +254,7 @@ X-Execution-Timeout: 30000
 ### Scientific Data Handling
 
 #### CSV Format Requirements
+
 ```typescript
 interface CSVParseOptions {
   delimiter: ',' | ';' | '\t';
@@ -262,6 +266,7 @@ interface CSVParseOptions {
 ```
 
 #### JSON Schema Validation
+
 ```typescript
 interface JSONDataSchema {
   type: 'object' | 'array';
@@ -282,7 +287,7 @@ const PathPatterns = {
   PROJECT_ROOT: /^[a-zA-Z0-9_-]+$/,
   DATA_FILE: /^[a-zA-Z0-9_-]+\.(csv|json|hdf5|nc)$/,
   CONFIG_FILE: /^[a-zA-Z0-9_-]+\.(json|yaml|toml)$/,
-  COMPONENT_FILE: /^[A-Z][a-zA-Z0-9]+\.(tsx?|jsx?)$/
+  COMPONENT_FILE: /^[A-Z][a-zA-Z0-9]+\.(tsx?|jsx?)$/,
 };
 
 // Absolute path requirements
@@ -324,12 +329,12 @@ function validateFilePath(path: string): boolean {
 
 ### Response Time Requirements
 
-| Operation Type | Target (p95) | Maximum | Notes |
-|----------------|--------------|---------|-------|
-| Simple Tools | <250ms | 500ms | File operations, validation |
-| Project Creation | <2s | 5s | Scaffolding, dependency installation |
-| Data Processing | <1s | 10s | CSV/JSON parsing, schema inference |
-| Complex Operations | <5s | 30s | Multi-step workflows |
+| Operation Type     | Target (p95) | Maximum | Notes                                |
+| ------------------ | ------------ | ------- | ------------------------------------ |
+| Simple Tools       | <250ms       | 500ms   | File operations, validation          |
+| Project Creation   | <2s          | 5s      | Scaffolding, dependency installation |
+| Data Processing    | <1s          | 10s     | CSV/JSON parsing, schema inference   |
+| Complex Operations | <5s          | 30s     | Multi-step workflows                 |
 
 ### Memory Usage Guidelines
 
@@ -340,7 +345,8 @@ class BaseMCPTool {
     const usage = process.memoryUsage();
 
     // Alert if memory usage exceeds thresholds
-    if (usage.heapUsed > 512 * 1024 * 1024) { // 512MB
+    if (usage.heapUsed > 512 * 1024 * 1024) {
+      // 512MB
       this.logger.warn('High memory usage detected', usage);
     }
 
@@ -348,7 +354,7 @@ class BaseMCPTool {
       heapUsed: usage.heapUsed,
       heapTotal: usage.heapTotal,
       external: usage.external,
-      rss: usage.rss
+      rss: usage.rss,
     };
   }
 }
@@ -379,7 +385,7 @@ logger.info('Tool execution completed', {
   tool: 'create-project',
   duration: 1250,
   output: { projectPath: '/path/to/project' },
-  correlationId: 'req-123'
+  correlationId: 'req-123',
 });
 ```
 

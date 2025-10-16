@@ -7,7 +7,7 @@ sequenceDiagram
     participant Tool as Tool Handler
     participant CLI as Strudel CLI
     participant FS as File System
-    
+
     AI->>MCP: MCP Request (create-project)
     MCP->>MCP: Validate Request
     MCP->>Tool: Route to CreateProjectTool

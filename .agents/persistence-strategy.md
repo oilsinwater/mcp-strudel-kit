@@ -166,7 +166,8 @@ export class MCPCache {
   private readonly maxSize: number;
   private readonly defaultTTL: number;
 
-  constructor(maxSize = 1000, defaultTTL = 300000) { // 5 minutes
+  constructor(maxSize = 1000, defaultTTL = 300000) {
+    // 5 minutes
     this.cache = new Map();
     this.maxSize = maxSize;
     this.defaultTTL = defaultTTL;
@@ -177,7 +178,7 @@ export class MCPCache {
       value,
       expiry: Date.now() + (ttl || this.defaultTTL),
       accessCount: 0,
-      lastAccessed: Date.now()
+      lastAccessed: Date.now(),
     };
 
     // Implement LRU eviction
@@ -276,7 +277,7 @@ export class ScientificDataStore {
     datasetId: string,
     format: 'csv' | 'json' | 'hdf5' | 'netcdf',
     data: any,
-    metadata?: any
+    metadata?: any,
   ): Promise<string> {
     const datasetPath = path.join(this.dataPath, projectId, `${datasetId}.${format}`);
     await fs.mkdir(path.dirname(datasetPath), { recursive: true });
@@ -344,7 +345,7 @@ export class ScientificDataStore {
     const rows = [headers.join(',')];
 
     for (const item of data) {
-      const row = headers.map(header => {
+      const row = headers.map((header) => {
         const value = item[header];
         // Escape CSV values properly
         return typeof value === 'string' && value.includes(',')
@@ -360,7 +361,7 @@ export class ScientificDataStore {
   private async loadCSV(filePath: string): Promise<any[]> {
     // Implementation for CSV parsing
     const content = await fs.readFile(filePath, 'utf-8');
-    const lines = content.split('\n').filter(line => line.trim());
+    const lines = content.split('\n').filter((line) => line.trim());
 
     if (lines.length === 0) return [];
 
@@ -504,18 +505,18 @@ export const defaultPersistenceConfig: PersistenceConfig = {
   fileSystem: {
     basePath: './data',
     compression: false,
-    encryption: false
+    encryption: false,
   },
   cache: {
     enabled: true,
     maxSize: 1000,
-    defaultTTL: 300000 // 5 minutes
+    defaultTTL: 300000, // 5 minutes
   },
   cleanup: {
     tempFileTTL: 3600000, // 1 hour
     projectRetention: 30, // 30 days
-    automaticCleanup: true
-  }
+    automaticCleanup: true,
+  },
 };
 ```
 
@@ -529,23 +530,25 @@ export function loadPersistenceConfig(): PersistenceConfig {
     fileSystem: {
       basePath: process.env.DATA_PATH || './data',
       compression: process.env.ENABLE_COMPRESSION === 'true',
-      encryption: process.env.ENABLE_ENCRYPTION === 'true'
+      encryption: process.env.ENABLE_ENCRYPTION === 'true',
     },
     cache: {
       enabled: process.env.CACHE_ENABLED !== 'false',
       maxSize: parseInt(process.env.CACHE_MAX_SIZE || '1000'),
-      defaultTTL: parseInt(process.env.CACHE_TTL || '300000')
+      defaultTTL: parseInt(process.env.CACHE_TTL || '300000'),
     },
-    database: process.env.DATABASE_URL ? {
-      adapter: (process.env.DB_ADAPTER as any) || 'postgresql',
-      connectionString: process.env.DATABASE_URL,
-      poolSize: parseInt(process.env.DB_POOL_SIZE || '10')
-    } : undefined,
+    database: process.env.DATABASE_URL
+      ? {
+          adapter: (process.env.DB_ADAPTER as any) || 'postgresql',
+          connectionString: process.env.DATABASE_URL,
+          poolSize: parseInt(process.env.DB_POOL_SIZE || '10'),
+        }
+      : undefined,
     cleanup: {
       tempFileTTL: parseInt(process.env.TEMP_FILE_TTL || '3600000'),
       projectRetention: parseInt(process.env.PROJECT_RETENTION_DAYS || '30'),
-      automaticCleanup: process.env.AUTO_CLEANUP !== 'false'
-    }
+      automaticCleanup: process.env.AUTO_CLEANUP !== 'false',
+    },
   };
 }
 ```
@@ -559,14 +562,11 @@ export function loadPersistenceConfig(): PersistenceConfig {
 export class OptimizedFileStore {
   async streamLargeFile(filePath: string): Promise<NodeJS.ReadableStream> {
     return fs.createReadStream(filePath, {
-      highWaterMark: 64 * 1024 // 64KB chunks
+      highWaterMark: 64 * 1024, // 64KB chunks
     });
   }
 
-  async writeStreamToFile(
-    stream: NodeJS.ReadableStream,
-    filePath: string
-  ): Promise<void> {
+  async writeStreamToFile(stream: NodeJS.ReadableStream, filePath: string): Promise<void> {
     const writeStream = fs.createWriteStream(filePath);
 
     return new Promise((resolve, reject) => {
@@ -599,7 +599,7 @@ export class MemoryEfficientProcessor {
   async processLargeDataset(
     datasetPath: string,
     processor: (chunk: any[]) => Promise<void>,
-    chunkSize: number = 1000
+    chunkSize: number = 1000,
   ): Promise<void> {
     const stream = fs.createReadStream(datasetPath);
     let buffer = '';
@@ -650,10 +650,13 @@ export class BackupManager {
 
     // Create compressed backup
     const tar = require('tar');
-    await tar.create({
-      gzip: true,
-      file: backupPath
-    }, [projectPath]);
+    await tar.create(
+      {
+        gzip: true,
+        file: backupPath,
+      },
+      [projectPath],
+    );
 
     return backupPath;
   }
@@ -665,19 +668,22 @@ export class BackupManager {
     const tar = require('tar');
     await tar.extract({
       file: backupPath,
-      cwd: this.basePath
+      cwd: this.basePath,
     });
   }
 
   async schedulePeriodicBackup(projectId: string, intervalHours: number = 24): Promise<void> {
-    setInterval(async () => {
-      try {
-        await this.createBackup(projectId);
-        this.logger.info(`Backup created for project ${projectId}`);
-      } catch (error) {
-        this.logger.error(`Backup failed for project ${projectId}`, error);
-      }
-    }, intervalHours * 60 * 60 * 1000);
+    setInterval(
+      async () => {
+        try {
+          await this.createBackup(projectId);
+          this.logger.info(`Backup created for project ${projectId}`);
+        } catch (error) {
+          this.logger.error(`Backup failed for project ${projectId}`, error);
+        }
+      },
+      intervalHours * 60 * 60 * 1000,
+    );
   }
 }
 ```

@@ -16,15 +16,16 @@ All logs follow a consistent JSON structure for machine readability and efficien
 
 ```typescript
 interface LogEntry {
-  timestamp: string;           // ISO 8601 format
+  timestamp: string; // ISO 8601 format
   level: 'debug' | 'info' | 'warn' | 'error' | 'fatal';
-  message: string;             // Human-readable message
-  correlationId: string;       // Request correlation ID
-  component: string;           // Component generating the log
-  tool?: string;              // Tool name (if applicable)
-  duration?: number;          // Operation duration (ms)
+  message: string; // Human-readable message
+  correlationId: string; // Request correlation ID
+  component: string; // Component generating the log
+  tool?: string; // Tool name (if applicable)
+  duration?: number; // Operation duration (ms)
   metadata: Record<string, any>; // Additional context data
-  error?: {                   // Error details (for error logs)
+  error?: {
+    // Error details (for error logs)
     name: string;
     message: string;
     stack: string;
@@ -35,13 +36,13 @@ interface LogEntry {
 
 ### Log Levels and Usage
 
-| Level | Usage | Examples | Retention |
-|-------|-------|----------|-----------|
-| **DEBUG** | Detailed flow information | Variable values, internal state changes | 7 days |
-| **INFO** | Normal operational events | Tool execution start/completion, server startup | 30 days |
-| **WARN** | Warning conditions | Performance degradation, deprecated features | 90 days |
-| **ERROR** | Error conditions | Tool failures, validation errors | 1 year |
-| **FATAL** | System-critical failures | Server crashes, unrecoverable errors | Permanent |
+| Level     | Usage                     | Examples                                        | Retention |
+| --------- | ------------------------- | ----------------------------------------------- | --------- |
+| **DEBUG** | Detailed flow information | Variable values, internal state changes         | 7 days    |
+| **INFO**  | Normal operational events | Tool execution start/completion, server startup | 30 days   |
+| **WARN**  | Warning conditions        | Performance degradation, deprecated features    | 90 days   |
+| **ERROR** | Error conditions          | Tool failures, validation errors                | 1 year    |
+| **FATAL** | System-critical failures  | Server crashes, unrecoverable errors            | Permanent |
 
 ### Logging Implementation
 
@@ -59,43 +60,45 @@ export class Logger {
       format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.errors({ stack: true }),
-        winston.format.json()
+        winston.format.json(),
       ),
       defaultMeta: { component },
-      transports: this.createTransports()
+      transports: this.createTransports(),
     });
   }
 
   info(message: string, metadata: any = {}, correlationId?: string): void {
     this.winston.info(message, {
       ...metadata,
-      correlationId: correlationId || this.generateCorrelationId()
+      correlationId: correlationId || this.generateCorrelationId(),
     });
   }
 
   warn(message: string, metadata: any = {}, correlationId?: string): void {
     this.winston.warn(message, {
       ...metadata,
-      correlationId: correlationId || this.generateCorrelationId()
+      correlationId: correlationId || this.generateCorrelationId(),
     });
   }
 
   error(message: string, error?: Error, metadata: any = {}, correlationId?: string): void {
     this.winston.error(message, {
       ...metadata,
-      error: error ? {
-        name: error.name,
-        message: error.message,
-        stack: error.stack
-      } : undefined,
-      correlationId: correlationId || this.generateCorrelationId()
+      error: error
+        ? {
+            name: error.name,
+            message: error.message,
+            stack: error.stack,
+          }
+        : undefined,
+      correlationId: correlationId || this.generateCorrelationId(),
     });
   }
 
   debug(message: string, metadata: any = {}, correlationId?: string): void {
     this.winston.debug(message, {
       ...metadata,
-      correlationId: correlationId || this.generateCorrelationId()
+      correlationId: correlationId || this.generateCorrelationId(),
     });
   }
 
@@ -109,13 +112,11 @@ export class Logger {
   private createTransports(): winston.transport[] {
     const transports: winston.transport[] = [
       new winston.transports.Console({
-        format: appConfig.logging.format === 'text'
-          ? winston.format.combine(
-              winston.format.colorize(),
-              winston.format.simple()
-            )
-          : winston.format.json()
-      })
+        format:
+          appConfig.logging.format === 'text'
+            ? winston.format.combine(winston.format.colorize(), winston.format.simple())
+            : winston.format.json(),
+      }),
     ];
 
     // Add file transport if configured
@@ -125,8 +126,8 @@ export class Logger {
           filename: appConfig.logging.filePath,
           maxsize: appConfig.logging.maxSize,
           maxFiles: appConfig.logging.maxFiles,
-          tailable: true
-        })
+          tailable: true,
+        }),
       );
     }
 
@@ -150,8 +151,9 @@ export const requestLogger = new Logger('http-requests');
 // HTTP request/response logging middleware
 export function requestLoggingMiddleware() {
   return (req: Request, res: Response, next: NextFunction) => {
-    const correlationId = req.headers['x-correlation-id'] as string ||
-                         `req-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const correlationId =
+      (req.headers['x-correlation-id'] as string) ||
+      `req-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
     // Add correlation ID to request for downstream use
     req.correlationId = correlationId;
@@ -160,26 +162,34 @@ export function requestLoggingMiddleware() {
     const startTime = Date.now();
 
     // Log request
-    requestLogger.info('HTTP request received', {
-      method: req.method,
-      url: req.url,
-      userAgent: req.headers['user-agent'],
-      ip: req.ip,
-      contentLength: req.headers['content-length']
-    }, correlationId);
+    requestLogger.info(
+      'HTTP request received',
+      {
+        method: req.method,
+        url: req.url,
+        userAgent: req.headers['user-agent'],
+        ip: req.ip,
+        contentLength: req.headers['content-length'],
+      },
+      correlationId,
+    );
 
     // Log response when finished
     res.on('finish', () => {
       const duration = Date.now() - startTime;
       const level = res.statusCode >= 400 ? 'error' : 'info';
 
-      requestLogger[level]('HTTP request completed', {
-        method: req.method,
-        url: req.url,
-        statusCode: res.statusCode,
-        duration,
-        responseSize: res.getHeader('content-length')
-      }, correlationId);
+      requestLogger[level](
+        'HTTP request completed',
+        {
+          method: req.method,
+          url: req.url,
+          statusCode: res.statusCode,
+          duration,
+          responseSize: res.getHeader('content-length'),
+        },
+        correlationId,
+      );
     });
 
     next();
@@ -212,19 +222,19 @@ export class MetricsCollector {
     this.metrics.set(key, {
       type: 'gauge',
       value,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
   }
 
   // Histogram metrics (distribution of values)
   recordHistogram(name: string, value: number, tags: Record<string, string> = {}): void {
     const key = this.buildMetricKey(name, tags);
-    const existing = this.metrics.get(key) as HistogramMetric || {
+    const existing = (this.metrics.get(key) as HistogramMetric) || {
       type: 'histogram',
       values: [],
       count: 0,
       sum: 0,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
 
     existing.values.push(value);
@@ -273,12 +283,12 @@ export class MetricsCollector {
           p95: this.percentile(values, 0.95),
           p99: this.percentile(values, 0.99),
           min: values[0],
-          max: values[values.length - 1]
+          max: values[values.length - 1],
         };
       } else {
         result[key] = {
           value: metric.value,
-          timestamp: metric.timestamp
+          timestamp: metric.timestamp,
         };
       }
     }
@@ -346,7 +356,7 @@ export class KPITracker {
       logger.warn('Slow tool execution detected', {
         tool: toolName,
         duration,
-        threshold: appConfig.monitoring.executionTimeAlertThreshold
+        threshold: appConfig.monitoring.executionTimeAlertThreshold,
       });
     }
   }
@@ -366,7 +376,7 @@ export class KPITracker {
       logger.warn('High memory usage detected', {
         heapUsedMB,
         threshold: appConfig.monitoring.memoryAlertThreshold,
-        usage
+        usage,
       });
     }
   }
@@ -376,19 +386,19 @@ export class KPITracker {
     this.metricsCollector.incrementCounter('http.requests.total', 1, {
       method,
       path,
-      status: statusCode.toString()
+      status: statusCode.toString(),
     });
 
     this.metricsCollector.recordHistogram('http.request.duration', duration, {
       method,
-      path
+      path,
     });
 
     if (statusCode >= 400) {
       this.metricsCollector.incrementCounter('http.requests.error', 1, {
         method,
         path,
-        status: statusCode.toString()
+        status: statusCode.toString(),
       });
     }
   }
@@ -410,7 +420,10 @@ export class KPITracker {
 
     // Active handles and requests
     this.metricsCollector.setGauge('process.handles', (process as any)._getActiveHandles().length);
-    this.metricsCollector.setGauge('process.requests', (process as any)._getActiveRequests().length);
+    this.metricsCollector.setGauge(
+      'process.requests',
+      (process as any)._getActiveRequests().length,
+    );
   }
 }
 
@@ -437,22 +450,19 @@ export class HealthCheckService {
     for (const [name, check] of this.checks.entries()) {
       try {
         const startTime = Date.now();
-        const result = await Promise.race([
-          check.execute(),
-          this.timeout(check.timeout || 5000)
-        ]);
+        const result = await Promise.race([check.execute(), this.timeout(check.timeout || 5000)]);
 
         results[name] = {
           status: 'healthy',
           duration: Date.now() - startTime,
-          details: result
+          details: result,
         };
       } catch (error) {
         results[name] = {
           status: 'unhealthy',
           duration: Date.now() - Date.now(),
           error: error.message,
-          details: null
+          details: null,
         };
 
         overallStatus = 'unhealthy';
@@ -464,7 +474,7 @@ export class HealthCheckService {
       timestamp: new Date().toISOString(),
       checks: results,
       uptime: process.uptime(),
-      version: process.env.npm_package_version || 'unknown'
+      version: process.env.npm_package_version || 'unknown',
     };
   }
 
@@ -506,7 +516,7 @@ healthService.registerCheck('database', {
     // Implement database ping
     return { status: 'connected' };
   },
-  timeout: 3000
+  timeout: 3000,
 });
 
 // File system check
@@ -515,7 +525,7 @@ healthService.registerCheck('filesystem', {
     const fs = require('fs').promises;
     await fs.access(appConfig.persistence.dataPath, fs.constants.W_OK);
     return { path: appConfig.persistence.dataPath, writable: true };
-  }
+  },
 });
 
 // Memory check
@@ -527,9 +537,9 @@ healthService.registerCheck('memory', {
     return {
       heapUsedMB,
       threshold: appConfig.monitoring.memoryAlertThreshold,
-      status: heapUsedMB < appConfig.monitoring.memoryAlertThreshold ? 'ok' : 'warning'
+      status: heapUsedMB < appConfig.monitoring.memoryAlertThreshold ? 'ok' : 'warning',
     };
-  }
+  },
 });
 
 // Tool registry check
@@ -539,9 +549,9 @@ healthService.registerCheck('tools', {
     const toolCount = 5; // This would be actual tool count
     return {
       toolsLoaded: toolCount,
-      autoDiscoveryEnabled: appConfig.mcp.hotReloadEnabled
+      autoDiscoveryEnabled: appConfig.mcp.hotReloadEnabled,
     };
-  }
+  },
 });
 ```
 
@@ -568,8 +578,8 @@ export class MonitoringDashboard {
         type: 'init',
         data: {
           config: this.getSafeConfig(),
-          initialMetrics: metrics.getMetrics()
-        }
+          initialMetrics: metrics.getMetrics(),
+        },
       });
 
       ws.on('close', () => {
@@ -593,14 +603,14 @@ export class MonitoringDashboard {
       this.broadcast({
         type: 'metrics',
         timestamp: Date.now(),
-        data: currentMetrics
+        data: currentMetrics,
       });
     }, appConfig.monitoring.metricsInterval);
   }
 
   private broadcast(message: any): void {
     const payload = JSON.stringify(message);
-    this.clients.forEach(client => {
+    this.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(payload);
       }
@@ -616,10 +626,10 @@ export class MonitoringDashboard {
   private handleClientMessage(client: WebSocket, message: any): void {
     switch (message.type) {
       case 'getHealth':
-        healthService.runHealthChecks().then(health => {
+        healthService.runHealthChecks().then((health) => {
           this.sendToClient(client, {
             type: 'health',
-            data: health
+            data: health,
           });
         });
         break;
@@ -630,7 +640,7 @@ export class MonitoringDashboard {
           // Implementation to clear metrics
           this.sendToClient(client, {
             type: 'metricsCleared',
-            timestamp: Date.now()
+            timestamp: Date.now(),
           });
         }
         break;
@@ -643,7 +653,7 @@ export class MonitoringDashboard {
       nodeEnv: appConfig.server.nodeEnv,
       version: process.env.npm_package_version,
       features: appConfig.features,
-      monitoring: appConfig.monitoring
+      monitoring: appConfig.monitoring,
     };
   }
 }
@@ -674,7 +684,7 @@ export class AlertManager {
       },
       severity: 'warning',
       message: 'Memory usage exceeds threshold',
-      suppressionTime: 300000 // 5 minutes
+      suppressionTime: 300000, // 5 minutes
     });
 
     // Slow tool execution alert
@@ -686,7 +696,7 @@ export class AlertManager {
       },
       severity: 'warning',
       message: 'Tool execution time exceeds threshold',
-      suppressionTime: 600000 // 10 minutes
+      suppressionTime: 600000, // 10 minutes
     });
 
     // High error rate alert
@@ -700,7 +710,7 @@ export class AlertManager {
       },
       severity: 'critical',
       message: 'HTTP error rate exceeds 10%',
-      suppressionTime: 180000 // 3 minutes
+      suppressionTime: 180000, // 3 minutes
     });
   }
 
@@ -729,7 +739,7 @@ export class AlertManager {
           message: rule.message,
           timestamp: new Date().toISOString(),
           metrics: this.extractRelevantMetrics(currentMetrics, rule),
-          resolved: false
+          resolved: false,
         };
 
         this.fireAlert(alert);
@@ -746,7 +756,7 @@ export class AlertManager {
     logger.error(`ALERT: ${alert.message}`, {
       alert: alert.name,
       severity: alert.severity,
-      metrics: alert.metrics
+      metrics: alert.metrics,
     });
 
     this.alertHistory.push(alert);
@@ -770,15 +780,14 @@ export class AlertManager {
     logger.info('Alert notification sent', {
       alert: alert.name,
       channels,
-      severity: alert.severity
+      severity: alert.severity,
     });
   }
 
   private extractRelevantMetrics(metrics: any, rule: AlertRule): any {
     // Extract metrics relevant to the alert
     return Object.keys(metrics)
-      .filter(key => rule.relevantMetrics?.includes(key) ||
-                    key.includes(rule.name.split('_')[0]))
+      .filter((key) => rule.relevantMetrics?.includes(key) || key.includes(rule.name.split('_')[0]))
       .reduce((acc, key) => {
         acc[key] = metrics[key];
         return acc;
@@ -861,13 +870,13 @@ export class LogShipper {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.LOG_SHIPPING_TOKEN}`
+          Authorization: `Bearer ${process.env.LOG_SHIPPING_TOKEN}`,
         },
         body: JSON.stringify({
           logs,
           source: 'mcp-strudel-kit',
-          instance: appConfig.server.instanceId
-        })
+          instance: appConfig.server.instanceId,
+        }),
       });
 
       logger.debug(`Shipped ${logs.length} logs to external service`);

@@ -5,6 +5,7 @@
 **Purpose:** Represents a generated scientific application project
 
 **Key Attributes:**
+
 - projectId: string - Unique identifier for the project
 - projectName: string - Name given to the project
 - path: string - File system path to the project
@@ -13,6 +14,7 @@
 - dataSources: object[] - Connected data sources with metadata
 
 **Relationships:**
+
 - One project can have multiple data sources
 - One project can have multiple task flows
 - One project is associated with one configuration
@@ -22,6 +24,7 @@
 **Purpose:** Represents a connected scientific data source
 
 **Key Attributes:**
+
 - sourceId: string - Unique identifier for the data source
 - projectId: string - Reference to the project
 - type: enum - Format type (CSV, JSON, HDF5, NetCDF)
@@ -31,5 +34,6 @@
 - lastConnected: Date - Timestamp of last successful connection
 
 **Relationships:**
+
 - One data source belongs to one project
 - One data source can be used by multiple components

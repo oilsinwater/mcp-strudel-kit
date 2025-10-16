@@ -13,9 +13,9 @@ N/A
 
 ### Change Log
 
-| Date | Version | Description | Author |
-|------|---------|-------------|--------|
-| 2025-09-19 | 1.0 | Initial architecture document | Winston (AI Architect) |
+| Date       | Version | Description                   | Author                 |
+| ---------- | ------- | ----------------------------- | ---------------------- |
+| 2025-09-19 | 1.0     | Initial architecture document | Winston (AI Architect) |
 
 ## High Level Architecture
 
@@ -30,6 +30,7 @@ The primary technology choices include Node.js 18+ with TypeScript 5.0+, the xmc
 The architecture follows a modular service style built around the xmcp framework. The repository structure uses a monorepo approach with logical separation of concerns. The primary user interaction flow involves AI agents sending MCP requests to the server, which routes them to appropriate tools that interact with the Strudel Kit CLI and file system to generate scientific applications.
 
 Key architectural decisions include:
+
 1. Using the xmcp framework as the foundation for MCP compliance
 2. Implementing auto-discovery for custom tools in the `src/tools/` directory
 3. Integrating with the Strudel Kit CLI as a subprocess for frontend generation
@@ -43,14 +44,14 @@ graph TB
         Claude[Claude/ChatGPT]
         Other[Other MCP Clients]
     end
-    
+
     subgraph "MCP Server Core"
         Gateway[MCP Gateway]
         Router[Tool Router]
         Registry[Tool Registry]
         Context[Context Manager]
     end
-    
+
     subgraph "Tool Layer"
         CP[create-project]
         ATF[add-task-flow]
@@ -59,20 +60,20 @@ graph TB
         GW[generate-workflow]
         Custom[Custom Tools]
     end
-    
+
     subgraph "Integration Layer"
         StrudelCLI[Strudel Kit CLI]
         FileSystem[File System]
         DataParsers[Data Parsers]
         Templates[Template Engine]
     end
-    
+
     subgraph "Generated Output"
         React[React Apps]
         Config[Configurations]
         Assets[Generated Assets]
     end
-    
+
     Claude --> Gateway
     Other --> Gateway
     Gateway --> Router
@@ -105,17 +106,17 @@ graph TB
 
 The following MCP servers are recommended for developing the Strudel Kit MCP Server:
 
-| MCP Server | Purpose | Rationale |
-|------------|---------|-----------|
+| MCP Server                                  | Purpose                                          | Rationale                                                                         |
+| ------------------------------------------- | ------------------------------------------------ | --------------------------------------------------------------------------------- |
 | **@modelcontextprotocol/server-filesystem** | File operations and project structure management | Essential for tool auto-discovery, CLI integration, and generated output handling |
-| **@modelcontextprotocol/server-git** | Version control operations | Required for project collaboration and version management |
-| **@modelcontextprotocol/server-typescript** | TypeScript compilation and type checking | Core requirement for TypeScript 5.0+ development and strict mode compliance |
-| **@modelcontextprotocol/server-vitest** | Testing framework support | Supports the 80% coverage requirement with native TypeScript and ESM support |
-| **@modelcontextprotocol/server-eslint** | Code linting and style enforcement | Enforces Airbnb TypeScript style guide and coding standards |
-| **@modelcontextprotocol/server-npm** | Package management | Manages scientific data parsing libraries (CSV, JSON, HDF5, NetCDF) |
-| **@modelcontextprotocol/server-subprocess** | Child process management | Critical for Strudel CLI integration via subprocess execution |
-| **@modelcontextprotocol/server-markdown** | Documentation maintenance | Supports architecture documentation and README management |
-| **@modelcontextprotocol/server-mermaid** | Diagram generation | Maintains architectural diagrams and component visualizations |
+| **@modelcontextprotocol/server-git**        | Version control operations                       | Required for project collaboration and version management                         |
+| **@modelcontextprotocol/server-typescript** | TypeScript compilation and type checking         | Core requirement for TypeScript 5.0+ development and strict mode compliance       |
+| **@modelcontextprotocol/server-vitest**     | Testing framework support                        | Supports the 80% coverage requirement with native TypeScript and ESM support      |
+| **@modelcontextprotocol/server-eslint**     | Code linting and style enforcement               | Enforces Airbnb TypeScript style guide and coding standards                       |
+| **@modelcontextprotocol/server-npm**        | Package management                               | Manages scientific data parsing libraries (CSV, JSON, HDF5, NetCDF)               |
+| **@modelcontextprotocol/server-subprocess** | Child process management                         | Critical for Strudel CLI integration via subprocess execution                     |
+| **@modelcontextprotocol/server-markdown**   | Documentation maintenance                        | Supports architecture documentation and README management                         |
+| **@modelcontextprotocol/server-mermaid**    | Diagram generation                               | Maintains architectural diagrams and component visualizations                     |
 
 ### Cloud Infrastructure
 
@@ -125,16 +126,16 @@ The following MCP servers are recommended for developing the Strudel Kit MCP Ser
 
 ### Technology Stack Table
 
-| Category | Technology | Version | Purpose | Rationale |
-|----------|------------|---------|---------|-----------|
-| **Language** | TypeScript | 5.0+ | Primary development language | Strong typing, excellent tooling, aligns with Strudel Kit |
-| **Runtime** | Node.js | 18.x | JavaScript runtime | LTS version, wide ecosystem, required by xmcp |
-| **Framework** | xmcp | latest | MCP framework | Core requirement for building MCP servers |
-| **Web Framework** | Express.js | 4.x | HTTP server | Provided by xmcp, lightweight and well-known |
-| **Data Formats** | CSV/JSON/HDF5/NetCDF parsers | latest | Scientific data parsing | Required for configure-data-source tool |
-| **Testing** | Vitest | latest | Testing framework | Native TypeScript support, faster execution, ESM-first design |
-| **Build Tool** | ESBuild/SWC | latest | Compilation | Fast compilation, used by xmcp |
-| **Development** | Hot Module Replacement | latest | Development experience | Required for hot reloading support |
+| Category          | Technology                   | Version | Purpose                      | Rationale                                                     |
+| ----------------- | ---------------------------- | ------- | ---------------------------- | ------------------------------------------------------------- |
+| **Language**      | TypeScript                   | 5.0+    | Primary development language | Strong typing, excellent tooling, aligns with Strudel Kit     |
+| **Runtime**       | Node.js                      | 18.x    | JavaScript runtime           | LTS version, wide ecosystem, required by xmcp                 |
+| **Framework**     | xmcp                         | latest  | MCP framework                | Core requirement for building MCP servers                     |
+| **Web Framework** | Express.js                   | 4.x     | HTTP server                  | Provided by xmcp, lightweight and well-known                  |
+| **Data Formats**  | CSV/JSON/HDF5/NetCDF parsers | latest  | Scientific data parsing      | Required for configure-data-source tool                       |
+| **Testing**       | Vitest                       | latest  | Testing framework            | Native TypeScript support, faster execution, ESM-first design |
+| **Build Tool**    | ESBuild/SWC                  | latest  | Compilation                  | Fast compilation, used by xmcp                                |
+| **Development**   | Hot Module Replacement       | latest  | Development experience       | Required for hot reloading support                            |
 
 ## Data Models
 
@@ -143,6 +144,7 @@ The following MCP servers are recommended for developing the Strudel Kit MCP Ser
 **Purpose:** Represents a generated scientific application project
 
 **Key Attributes:**
+
 - projectId: string - Unique identifier for the project
 - projectName: string - Name given to the project
 - path: string - File system path to the project
@@ -151,6 +153,7 @@ The following MCP servers are recommended for developing the Strudel Kit MCP Ser
 - dataSources: object[] - Connected data sources with metadata
 
 **Relationships:**
+
 - One project can have multiple data sources
 - One project can have multiple task flows
 - One project is associated with one configuration
@@ -160,6 +163,7 @@ The following MCP servers are recommended for developing the Strudel Kit MCP Ser
 **Purpose:** Represents a connected scientific data source
 
 **Key Attributes:**
+
 - sourceId: string - Unique identifier for the data source
 - projectId: string - Reference to the project
 - type: enum - Format type (CSV, JSON, HDF5, NetCDF)
@@ -169,6 +173,7 @@ The following MCP servers are recommended for developing the Strudel Kit MCP Ser
 - lastConnected: Date - Timestamp of last successful connection
 
 **Relationships:**
+
 - One data source belongs to one project
 - One data source can be used by multiple components
 
@@ -179,6 +184,7 @@ The following MCP servers are recommended for developing the Strudel Kit MCP Ser
 **Responsibility:** Entry point for all MCP requests from AI agents
 
 **Key Interfaces:**
+
 - JSON-RPC 2.0 compliant endpoint
 - Request validation and routing
 
@@ -191,6 +197,7 @@ The following MCP servers are recommended for developing the Strudel Kit MCP Ser
 **Responsibility:** Auto-discovery and registration of MCP tools
 
 **Key Interfaces:**
+
 - Tool registration API
 - Tool lookup by name
 
@@ -203,6 +210,7 @@ The following MCP servers are recommended for developing the Strudel Kit MCP Ser
 **Responsibility:** Route incoming MCP requests to appropriate tools
 
 **Key Interfaces:**
+
 - Request routing logic
 - Tool execution interface
 
@@ -215,6 +223,7 @@ The following MCP servers are recommended for developing the Strudel Kit MCP Ser
 **Responsibility:** Interface with the Strudel Kit CLI for frontend generation
 
 **Key Interfaces:**
+
 - Project creation API
 - Task flow addition API
 - Component customization API
@@ -228,6 +237,7 @@ The following MCP servers are recommended for developing the Strudel Kit MCP Ser
 **Responsibility:** Parse and validate scientific data formats
 
 **Key Interfaces:**
+
 - Data parsing API for different formats
 - Schema inference API
 
@@ -240,6 +250,7 @@ The following MCP servers are recommended for developing the Strudel Kit MCP Ser
 **Responsibility:** Manage execution context for tool operations
 
 **Key Interfaces:**
+
 - Context creation and disposal
 - State management during tool execution
 
@@ -257,18 +268,18 @@ graph TB
         Registry[Tool Registry]
         Context[Context Manager]
     end
-    
+
     subgraph "Tool Execution Layer"
         Tools[Registered Tools]
         BaseTool[Base Tool Class]
     end
-    
+
     subgraph "Integration Layer"
         StrudelCLI[Strudel CLI Adapter]
         DataParser[Data Parser]
         FileSystem[File System]
     end
-    
+
     Gateway --> Router
     Router --> Registry
     Router --> Context
@@ -292,6 +303,7 @@ graph TB
 - **Rate Limits:** Limited by system resources
 
 **Key Endpoints Used:**
+
 - `npx strudel-kit create` - Create new projects
 - `npx strudel-kit add-flow` - Add task flows to existing projects
 - `npx strudel-kit customize` - Modify component properties
@@ -307,7 +319,7 @@ sequenceDiagram
     participant Tool as Tool Handler
     participant CLI as Strudel CLI
     participant FS as File System
-    
+
     AI->>MCP: MCP Request (create-project)
     MCP->>MCP: Validate Request
     MCP->>Tool: Route to CreateProjectTool
@@ -439,6 +451,7 @@ Development -> User Installation
 - **Languages & Runtimes:** TypeScript 5.7+, Node.js 20.x (LTS)
 - **Style & Linting:** ESLint 9.x with Airbnb TypeScript style guide, Prettier 3.x for formatting
 - **Test Organization:** Tests colocated with implementation files using `__tests__` subdirectories or `*.test.ts` naming convention
+
 ```
 
 ### Critical Rules
@@ -581,3 +594,4 @@ After completing the architecture:
 
 3. Specific prompts for next agents if needed:
    - For Frontend Architect: "Create frontend architecture for Strudel Kit MCP Server based on this backend architecture, focusing on React/TypeScript implementation with Strudel Kit components"
+```
