@@ -1,15 +1,15 @@
 {
-  "numTotalTestSuites": 12,
-  "numPassedTestSuites": 12,
-  "numFailedTestSuites": 0,
+  "numTotalTestSuites": 18,
+  "numPassedTestSuites": 17,
+  "numFailedTestSuites": 1,
   "numPendingTestSuites": 0,
-  "numTotalTests": 8,
-  "numPassedTests": 8,
-  "numFailedTests": 0,
+  "numTotalTests": 15,
+  "numPassedTests": 13,
+  "numFailedTests": 2,
   "numPendingTests": 0,
   "numTodoTests": 0,
-  "startTime": 1759875748077,
-  "success": true,
+  "startTime": 1760570858783,
+  "success": false,
   "testResults": [
     {
       "assertionResults": [
@@ -18,7 +18,7 @@
           "fullName": " developer workflow configuration provides hot-reload dev server and coverage pipeline",
           "status": "passed",
           "title": "provides hot-reload dev server and coverage pipeline",
-          "duration": 2,
+          "duration": 3,
           "failureMessages": []
         },
         {
@@ -30,11 +30,94 @@
           "failureMessages": []
         }
       ],
-      "startTime": 1759875748448,
-      "endTime": 1759875748451,
+      "startTime": 1760570859178,
+      "endTime": 1760570859182,
       "status": "passed",
       "message": "",
       "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/e2e/dev-workflow.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "environment bootstrap"],
+          "fullName": " environment bootstrap loads settings from .env into process.env",
+          "status": "passed",
+          "title": "loads settings from .env into process.env",
+          "duration": 10,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1760570859569,
+      "endTime": 1760570859579,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/integration/environment-loading.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "MCP HTTP endpoint"],
+          "fullName": " MCP HTTP endpoint initializes a session and executes the echo tool",
+          "status": "pending",
+          "title": "initializes a session and executes the echo tool",
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "MCP HTTP endpoint"],
+          "fullName": " MCP HTTP endpoint rejects malformed JSON-RPC requests before reaching the MCP transport",
+          "status": "pending",
+          "title": "rejects malformed JSON-RPC requests before reaching the MCP transport",
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1760570858783,
+      "endTime": 1760570858783,
+      "status": "failed",
+      "message": "",
+      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/integration/mcp-endpoint.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "server bootstrap"],
+          "fullName": " server bootstrap starts and stops the MCP server without error",
+          "status": "failed",
+          "title": "starts and stops the MCP server without error",
+          "duration": 23,
+          "failureMessages": ["Transport already started"],
+          "location": { "line": 186, "column": 19 }
+        }
+      ],
+      "startTime": 1760570861900,
+      "endTime": 1760570861923,
+      "status": "failed",
+      "message": "",
+      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/integration/server-startup.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "configuration loader"],
+          "fullName": " configuration loader applies default values when environment variables are absent",
+          "status": "passed",
+          "title": "applies default values when environment variables are absent",
+          "duration": 11,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "configuration loader"],
+          "fullName": " configuration loader parses numeric and boolean environment overrides",
+          "status": "passed",
+          "title": "parses numeric and boolean environment overrides",
+          "duration": 2,
+          "failureMessages": []
+        }
+      ],
+      "startTime": 1760570859334,
+      "endTime": 1760570859347,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/unit/config-loader.test.ts"
     },
     {
       "assertionResults": [
@@ -51,12 +134,12 @@
           "fullName": " package.json configuration enforces Node 20 runtime via engines field",
           "status": "passed",
           "title": "enforces Node 20 runtime via engines field",
-          "duration": 0,
+          "duration": 2,
           "failureMessages": []
         }
       ],
-      "startTime": 1759875748529,
-      "endTime": 1759875748533,
+      "startTime": 1760570859174,
+      "endTime": 1760570859180,
       "status": "passed",
       "message": "",
       "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/unit/package-config.test.ts"
@@ -64,17 +147,53 @@
     {
       "assertionResults": [
         {
-          "ancestorTitles": ["", "TypeScript project compilation"],
-          "fullName": " TypeScript project compilation compiles without emitting artifacts or diagnostics",
+          "ancestorTitles": ["", "ToolExecutor"],
+          "fullName": " ToolExecutor enforces execution timeout",
           "status": "passed",
-          "title": "compiles without emitting artifacts or diagnostics",
-          "duration": 957,
+          "title": "enforces execution timeout",
+          "duration": 29,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "ToolExecutor"],
+          "fullName": " ToolExecutor serializes executions when exceeding concurrency limit",
+          "status": "passed",
+          "title": "serializes executions when exceeding concurrency limit",
+          "duration": 95,
+          "failureMessages": []
+        },
+        {
+          "ancestorTitles": ["", "ToolExecutor"],
+          "fullName": " ToolExecutor honors aborted signals while waiting for a slot",
+          "status": "passed",
+          "title": "honors aborted signals while waiting for a slot",
+          "duration": 102,
           "failureMessages": []
         }
       ],
-      "startTime": 1759875750780,
-      "endTime": 1759875751739,
+      "startTime": 1760570859435,
+      "endTime": 1760570859661,
       "status": "passed",
+      "message": "",
+      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/unit/tool-executor.test.ts"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["", "TypeScript project compilation"],
+          "fullName": " TypeScript project compilation compiles without emitting artifacts or diagnostics",
+          "status": "failed",
+          "title": "compiles without emitting artifacts or diagnostics",
+          "duration": 1871,
+          "failureMessages": [
+            "expected [ { …(8) }, { …(8) }, { …(8) }, …(25) ] to have a length of +0 but got 28"
+          ],
+          "location": { "line": 66, "column": 33 }
+        }
+      ],
+      "startTime": 1760570862231,
+      "endTime": 1760570864102,
+      "status": "failed",
       "message": "",
       "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/unit/tsc-compilation.test.ts"
     },
@@ -85,49 +204,15 @@
           "fullName": " tsconfig path aliases exposes @ namespace mapping to src directories",
           "status": "passed",
           "title": "exposes @ namespace mapping to src directories",
-          "duration": 2,
+          "duration": 6,
           "failureMessages": []
         }
       ],
-      "startTime": 1759875748403,
-      "endTime": 1759875748405,
+      "startTime": 1760570859568,
+      "endTime": 1760570859574,
       "status": "passed",
       "message": "",
       "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/unit/tsconfig-alias.test.ts"
-    },
-    {
-      "assertionResults": [
-        {
-          "ancestorTitles": ["", "environment loading"],
-          "fullName": " environment loading reads .env file and populates process.env variables",
-          "status": "passed",
-          "title": "reads .env file and populates process.env variables",
-          "duration": 2,
-          "failureMessages": []
-        }
-      ],
-      "startTime": 1759875748395,
-      "endTime": 1759875748398,
-      "status": "passed",
-      "message": "",
-      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/integration/environment-loading.test.ts"
-    },
-    {
-      "assertionResults": [
-        {
-          "ancestorTitles": ["", "server bootstrap"],
-          "fullName": " server bootstrap loads environment and completes placeholder startup without error",
-          "status": "passed",
-          "title": "loads environment and completes placeholder startup without error",
-          "duration": 2,
-          "failureMessages": []
-        }
-      ],
-      "startTime": 1759875748398,
-      "endTime": 1759875748400,
-      "status": "passed",
-      "message": "",
-      "name": "/Users/phil/Sites/Superbloom/mcp-strudel-kit/tests/integration/server-startup.test.ts"
     }
   ]
 }
