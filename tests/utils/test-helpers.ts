@@ -13,7 +13,11 @@ export const mockHelpers = {
   /**
    * Mock child process for Strudel Kit CLI integration
    */
-  createMockChildProcess(mockOutput: string = '', mockError: string = '', exitCode: number = 0): Partial<ChildProcess> {
+  createMockChildProcess(
+    mockOutput: string = '',
+    mockError: string = '',
+    exitCode: number = 0,
+  ): Partial<ChildProcess> {
     const mockProcess = new EventEmitter() as Partial<ChildProcess>;
 
     mockProcess.stdout = new EventEmitter() as any;
@@ -44,7 +48,7 @@ export const mockHelpers = {
       mkdir: vi.fn(),
       readdir: vi.fn(),
       stat: vi.fn(),
-      access: vi.fn()
+      access: vi.fn(),
     };
   },
 
@@ -56,9 +60,9 @@ export const mockHelpers = {
       get: vi.fn(),
       post: vi.fn(),
       put: vi.fn(),
-      delete: vi.fn()
+      delete: vi.fn(),
     };
-  }
+  },
 };
 
 /**
@@ -114,7 +118,7 @@ export const mcpAssertions = {
     if (expectedResult !== undefined) {
       expect(response.result).toEqual(expectedResult);
     }
-  }
+  },
 };
 
 /**
@@ -138,7 +142,7 @@ export const performanceHelpers = {
   assertExecutionTime(duration: number, maxMs: number, operation: string = 'Operation') {
     expect(duration).toBeLessThan(maxMs);
     console.debug(`${operation} completed in ${duration.toFixed(2)}ms (limit: ${maxMs}ms)`);
-  }
+  },
 };
 
 /**
@@ -157,7 +161,7 @@ export const dataGenerators = {
         new Date(Date.now() - i * 1000 * 60).toISOString(),
         (20 + Math.random() * 10).toFixed(2),
         (40 + Math.random() * 30).toFixed(2),
-        (1013 + Math.random() * 10).toFixed(2)
+        (1013 + Math.random() * 10).toFixed(2),
       ];
       lines.push(row.join(','));
     }
@@ -175,33 +179,33 @@ export const dataGenerators = {
           id: 'test-' + Math.random().toString(36).substr(2, 9),
           name: 'Test Dataset',
           value: Math.random() * 100,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         };
 
       case 'nested':
         return {
           metadata: {
             id: 'test-nested',
-            created: new Date().toISOString()
+            created: new Date().toISOString(),
           },
           data: {
             measurements: Array.from({ length: 5 }, (_, i) => ({
               index: i,
-              value: Math.random() * 100
-            }))
-          }
+              value: Math.random() * 100,
+            })),
+          },
         };
 
       case 'array':
         return Array.from({ length: 10 }, (_, i) => ({
           id: i,
-          value: Math.random() * 100
+          value: Math.random() * 100,
         }));
 
       default:
         return {};
     }
-  }
+  },
 };
 
 /**
@@ -218,7 +222,7 @@ export const integrationHelpers = {
       start: vi.fn(),
       stop: vi.fn(),
       request: vi.fn(),
-      port: 0
+      port: 0,
     };
 
     return mockServer;
@@ -235,5 +239,5 @@ export const integrationHelpers = {
         console.warn('Error during test cleanup:', error);
       }
     }
-  }
+  },
 };

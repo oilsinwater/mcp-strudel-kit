@@ -187,15 +187,17 @@ const configSchema = Joi.object<AppConfig>({
   server: Joi.object({
     port: Joi.number().port().default(3000),
     host: Joi.string().default('localhost'),
-    nodeEnv: Joi.string().valid('development', 'test', 'staging', 'production').default('development'),
-    instanceId: Joi.string().default('mcp-server-1')
+    nodeEnv: Joi.string()
+      .valid('development', 'test', 'staging', 'production')
+      .default('development'),
+    instanceId: Joi.string().default('mcp-server-1'),
   }).required(),
 
   mcp: Joi.object({
     toolExecutionTimeout: Joi.number().min(1000).default(30000),
     maxConcurrentTools: Joi.number().min(1).default(10),
     hotReloadEnabled: Joi.boolean().default(true),
-    toolScanInterval: Joi.number().min(1000).default(5000)
+    toolScanInterval: Joi.number().min(1000).default(5000),
   }).required(),
 
   mcpAgents: Joi.array()
@@ -209,13 +211,15 @@ const configSchema = Joi.object<AppConfig>({
             Joi.object({
               type: Joi.string().valid('serena', 'playwright', 'github').required(),
               name: Joi.string().required(),
-              endpoint: Joi.string().uri({ scheme: ['http', 'https'] }).required(),
-              enabled: Joi.boolean().default(true)
-            })
+              endpoint: Joi.string()
+                .uri({ scheme: ['http', 'https'] })
+                .required(),
+              enabled: Joi.boolean().default(true),
+            }),
           )
           .min(1)
-          .required()
-      })
+          .required(),
+      }),
     )
     .min(1)
     .required(),
@@ -226,24 +230,26 @@ const configSchema = Joi.object<AppConfig>({
     logRequests: Joi.boolean().default(true),
     filePath: Joi.string().optional(),
     maxSize: Joi.number().min(1024).default(10485760),
-    maxFiles: Joi.number().min(1).default(5)
+    maxFiles: Joi.number().min(1).default(5),
   }).required(),
 
   persistence: Joi.object({
-    strategy: Joi.string().valid('file-only', 'file-with-cache', 'file-with-database').default('file-with-cache'),
+    strategy: Joi.string()
+      .valid('file-only', 'file-with-cache', 'file-with-database')
+      .default('file-with-cache'),
     dataPath: Joi.string().default('./data'),
     compression: Joi.boolean().default(false),
     encryption: Joi.boolean().default(false),
     tempFileTTL: Joi.number().min(60000).default(3600000),
     projectRetentionDays: Joi.number().min(1).default(30),
-    autoCleanup: Joi.boolean().default(true)
+    autoCleanup: Joi.boolean().default(true),
   }).required(),
 
   cache: Joi.object({
     enabled: Joi.boolean().default(true),
     maxSize: Joi.number().min(10).default(1000),
     ttl: Joi.number().min(1000).default(300000),
-    cleanupInterval: Joi.number().min(10000).default(60000)
+    cleanupInterval: Joi.number().min(10000).default(60000),
   }).required(),
 
   security: Joi.object({
@@ -251,21 +257,21 @@ const configSchema = Joi.object<AppConfig>({
     jwtSecret: Joi.string().when('authEnabled', {
       is: true,
       then: Joi.required(),
-      otherwise: Joi.optional()
+      otherwise: Joi.optional(),
     }),
     jwtExpiresIn: Joi.string().default('24h'),
     rateLimitRequests: Joi.number().min(1).default(100),
     rateLimitWindow: Joi.number().min(1000).default(60000),
     corsEnabled: Joi.boolean().default(true),
     corsOrigins: Joi.array().items(Joi.string()).default(['http://localhost:3000']),
-    maxRequestSize: Joi.string().default('10mb')
+    maxRequestSize: Joi.string().default('10mb'),
   }).required(),
 
   strudelKit: Joi.object({
     cliPath: Joi.string().default('strudel'),
     defaultTemplate: Joi.string().default('basic-scientific'),
     cliTimeout: Joi.number().min(5000).default(60000),
-    captureOutput: Joi.boolean().default(true)
+    captureOutput: Joi.boolean().default(true),
   }).required(),
 
   dataProcessing: Joi.object({
@@ -273,13 +279,13 @@ const configSchema = Joi.object<AppConfig>({
     supportedFormats: Joi.array().items(Joi.string()).default(['csv', 'json', 'hdf5', 'netcdf']),
     chunkSize: Joi.number().min(100).default(1000),
     schemaInference: Joi.boolean().default(true),
-    schemaConfidenceThreshold: Joi.number().min(0).max(1).default(0.8)
+    schemaConfidenceThreshold: Joi.number().min(0).max(1).default(0.8),
   }).required(),
 
   externalServices: Joi.object({
     apiTimeout: Joi.number().min(1000).default(10000),
     retries: Joi.number().min(0).default(3),
-    retryDelay: Joi.number().min(100).default(1000)
+    retryDelay: Joi.number().min(100).default(1000),
   }).required(),
 
   monitoring: Joi.object({
@@ -288,7 +294,7 @@ const configSchema = Joi.object<AppConfig>({
     memoryAlertThreshold: Joi.number().min(100).default(512),
     executionTimeAlertThreshold: Joi.number().min(1000).default(5000),
     healthCheckEnabled: Joi.boolean().default(true),
-    healthCheckInterval: Joi.number().min(1000).default(30000)
+    healthCheckInterval: Joi.number().min(1000).default(30000),
   }).required(),
 
   development: Joi.object({
@@ -296,13 +302,13 @@ const configSchema = Joi.object<AppConfig>({
     debugEndpoints: Joi.boolean().default(false),
     mockExternalServices: Joi.boolean().default(false),
     mockServicePort: Joi.number().port().default(3001),
-    requestTracing: Joi.boolean().default(false)
+    requestTracing: Joi.boolean().default(false),
   }).required(),
 
   testing: Joi.object({
     testDataPath: Joi.string().default('./test-data'),
     testMode: Joi.boolean().default(false),
-    testTimeout: Joi.number().min(1000).default(30000)
+    testTimeout: Joi.number().min(1000).default(30000),
   }).required(),
 
   database: Joi.object({
@@ -311,12 +317,12 @@ const configSchema = Joi.object<AppConfig>({
     poolSize: Joi.number().min(1).default(10),
     connectionTimeout: Joi.number().min(1000).default(5000),
     queryTimeout: Joi.number().min(1000).default(10000),
-    migrationsEnabled: Joi.boolean().default(true)
+    migrationsEnabled: Joi.boolean().default(true),
   }).optional(),
 
   cloudStorage: Joi.object({
     provider: Joi.string().valid('s3', 'gcs', 'azure').required(),
-    config: Joi.object().required()
+    config: Joi.object().required(),
   }).optional(),
 
   errorReporting: Joi.object({
@@ -324,17 +330,17 @@ const configSchema = Joi.object<AppConfig>({
     dsn: Joi.string().when('service', {
       is: Joi.valid('sentry', 'rollbar'),
       then: Joi.required(),
-      otherwise: Joi.optional()
+      otherwise: Joi.optional(),
     }),
-    sampleRate: Joi.number().min(0).max(1).default(1.0)
+    sampleRate: Joi.number().min(0).max(1).default(1.0),
   }).required(),
 
   features: Joi.object({
     experimental: Joi.boolean().default(false),
     newToolDiscovery: Joi.boolean().default(true),
     workflowGeneration: Joi.boolean().default(false),
-    advancedDataProcessing: Joi.boolean().default(false)
-  }).required()
+    advancedDataProcessing: Joi.boolean().default(false),
+  }).required(),
 });
 
 /**
@@ -354,20 +360,20 @@ function loadConfig(): AppConfig {
       type: 'serena',
       name: 'Serena MCP Server',
       endpoint: serenaEndpoint,
-      enabled: serenaEnabled
+      enabled: serenaEnabled,
     },
     {
       type: 'playwright',
       name: 'Playwright MCP Server',
       endpoint: playwrightEndpoint,
-      enabled: playwrightEnabled
+      enabled: playwrightEnabled,
     },
     {
       type: 'github',
       name: 'GitHub MCP Server',
       endpoint: githubEndpoint,
-      enabled: githubEnabled
-    }
+      enabled: githubEnabled,
+    },
   ];
 
   const agentDefinitions: Array<{ agentId: string; displayName: string; description?: string }> = [
@@ -376,29 +382,31 @@ function loadConfig(): AppConfig {
     { agentId: 'quinn', displayName: 'Quinn' },
     { agentId: 'opencode', displayName: 'OpenCode' },
     { agentId: 'crush', displayName: 'Crush' },
-    { agentId: 'coding', displayName: 'Coding Agents' }
+    { agentId: 'coding', displayName: 'Coding Agents' },
   ];
 
-  const agentConnections: MCPAgentConnection[] = agentDefinitions.map(({ agentId, displayName, description }) => ({
-    agentId,
-    displayName,
-    description,
-    servers: baseServerDefinitions.map((server) => ({ ...server }))
-  }));
+  const agentConnections: MCPAgentConnection[] = agentDefinitions.map(
+    ({ agentId, displayName, description }) => ({
+      agentId,
+      displayName,
+      description,
+      servers: baseServerDefinitions.map((server) => ({ ...server })),
+    }),
+  );
 
   const rawConfig = {
     server: {
       port: parseInt(process.env.PORT || '3000'),
       host: process.env.HOST || 'localhost',
       nodeEnv: process.env.NODE_ENV || 'development',
-      instanceId: process.env.INSTANCE_ID || 'mcp-server-1'
+      instanceId: process.env.INSTANCE_ID || 'mcp-server-1',
     },
 
     mcp: {
       toolExecutionTimeout: parseInt(process.env.TOOL_EXECUTION_TIMEOUT || '30000'),
       maxConcurrentTools: parseInt(process.env.MAX_CONCURRENT_TOOLS || '10'),
       hotReloadEnabled: process.env.HOT_RELOAD_ENABLED !== 'false',
-      toolScanInterval: parseInt(process.env.TOOL_SCAN_INTERVAL || '5000')
+      toolScanInterval: parseInt(process.env.TOOL_SCAN_INTERVAL || '5000'),
     },
 
     mcpAgents: agentConnections,
@@ -409,7 +417,7 @@ function loadConfig(): AppConfig {
       logRequests: process.env.LOG_REQUESTS !== 'false',
       filePath: process.env.LOG_FILE_PATH || undefined,
       maxSize: parseInt(process.env.LOG_MAX_SIZE || '10485760'),
-      maxFiles: parseInt(process.env.LOG_MAX_FILES || '5')
+      maxFiles: parseInt(process.env.LOG_MAX_FILES || '5'),
     },
 
     persistence: {
@@ -419,14 +427,14 @@ function loadConfig(): AppConfig {
       encryption: process.env.ENABLE_ENCRYPTION === 'true',
       tempFileTTL: parseInt(process.env.TEMP_FILE_TTL || '3600000'),
       projectRetentionDays: parseInt(process.env.PROJECT_RETENTION_DAYS || '30'),
-      autoCleanup: process.env.AUTO_CLEANUP !== 'false'
+      autoCleanup: process.env.AUTO_CLEANUP !== 'false',
     },
 
     cache: {
       enabled: process.env.CACHE_ENABLED !== 'false',
       maxSize: parseInt(process.env.CACHE_MAX_SIZE || '1000'),
       ttl: parseInt(process.env.CACHE_TTL || '300000'),
-      cleanupInterval: parseInt(process.env.CACHE_CLEANUP_INTERVAL || '60000')
+      cleanupInterval: parseInt(process.env.CACHE_CLEANUP_INTERVAL || '60000'),
     },
 
     security: {
@@ -437,28 +445,33 @@ function loadConfig(): AppConfig {
       rateLimitWindow: parseInt(process.env.RATE_LIMIT_WINDOW || '60000'),
       corsEnabled: process.env.CORS_ENABLED !== 'false',
       corsOrigins: process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3000'],
-      maxRequestSize: process.env.MAX_REQUEST_SIZE || '10mb'
+      maxRequestSize: process.env.MAX_REQUEST_SIZE || '10mb',
     },
 
     strudelKit: {
       cliPath: process.env.STRUDEL_CLI_PATH || 'strudel',
       defaultTemplate: process.env.DEFAULT_TEMPLATE || 'basic-scientific',
       cliTimeout: parseInt(process.env.STRUDEL_CLI_TIMEOUT || '60000'),
-      captureOutput: process.env.CAPTURE_CLI_OUTPUT !== 'false'
+      captureOutput: process.env.CAPTURE_CLI_OUTPUT !== 'false',
     },
 
     dataProcessing: {
       maxFileSize: parseInt(process.env.MAX_FILE_SIZE || '104857600'),
-      supportedFormats: process.env.SUPPORTED_FORMATS?.split(',') || ['csv', 'json', 'hdf5', 'netcdf'],
+      supportedFormats: process.env.SUPPORTED_FORMATS?.split(',') || [
+        'csv',
+        'json',
+        'hdf5',
+        'netcdf',
+      ],
       chunkSize: parseInt(process.env.DATA_CHUNK_SIZE || '1000'),
       schemaInference: process.env.ENABLE_SCHEMA_INFERENCE !== 'false',
-      schemaConfidenceThreshold: parseFloat(process.env.SCHEMA_CONFIDENCE_THRESHOLD || '0.8')
+      schemaConfidenceThreshold: parseFloat(process.env.SCHEMA_CONFIDENCE_THRESHOLD || '0.8'),
     },
 
     externalServices: {
       apiTimeout: parseInt(process.env.EXTERNAL_API_TIMEOUT || '10000'),
       retries: parseInt(process.env.EXTERNAL_API_RETRIES || '3'),
-      retryDelay: parseInt(process.env.EXTERNAL_API_RETRY_DELAY || '1000')
+      retryDelay: parseInt(process.env.EXTERNAL_API_RETRY_DELAY || '1000'),
     },
 
     monitoring: {
@@ -467,7 +480,7 @@ function loadConfig(): AppConfig {
       memoryAlertThreshold: parseInt(process.env.MEMORY_ALERT_THRESHOLD || '512'),
       executionTimeAlertThreshold: parseInt(process.env.EXECUTION_TIME_ALERT_THRESHOLD || '5000'),
       healthCheckEnabled: process.env.HEALTH_CHECK_ENABLED !== 'false',
-      healthCheckInterval: parseInt(process.env.HEALTH_CHECK_INTERVAL || '30000')
+      healthCheckInterval: parseInt(process.env.HEALTH_CHECK_INTERVAL || '30000'),
     },
 
     development: {
@@ -475,27 +488,27 @@ function loadConfig(): AppConfig {
       debugEndpoints: process.env.DEBUG_ENDPOINTS === 'true',
       mockExternalServices: process.env.MOCK_EXTERNAL_SERVICES === 'true',
       mockServicePort: parseInt(process.env.MOCK_SERVICE_PORT || '3001'),
-      requestTracing: process.env.REQUEST_TRACING === 'true'
+      requestTracing: process.env.REQUEST_TRACING === 'true',
     },
 
     testing: {
       testDataPath: process.env.TEST_DATA_PATH || './test-data',
       testMode: process.env.TEST_MODE === 'true',
-      testTimeout: parseInt(process.env.TEST_TIMEOUT || '30000')
+      testTimeout: parseInt(process.env.TEST_TIMEOUT || '30000'),
     },
 
     errorReporting: {
       service: process.env.ERROR_REPORTING || 'none',
       dsn: process.env.SENTRY_DSN,
-      sampleRate: parseFloat(process.env.ERROR_SAMPLE_RATE || '1.0')
+      sampleRate: parseFloat(process.env.ERROR_SAMPLE_RATE || '1.0'),
     },
 
     features: {
       experimental: process.env.EXPERIMENTAL_FEATURES === 'true',
       newToolDiscovery: process.env.ENABLE_NEW_TOOL_DISCOVERY !== 'false',
       workflowGeneration: process.env.ENABLE_WORKFLOW_GENERATION === 'true',
-      advancedDataProcessing: process.env.ENABLE_ADVANCED_DATA_PROCESSING === 'true'
-    }
+      advancedDataProcessing: process.env.ENABLE_ADVANCED_DATA_PROCESSING === 'true',
+    },
   };
 
   // Add optional database configuration
@@ -506,7 +519,7 @@ function loadConfig(): AppConfig {
       poolSize: parseInt(process.env.DB_POOL_SIZE || '10'),
       connectionTimeout: parseInt(process.env.DB_CONNECTION_TIMEOUT || '5000'),
       queryTimeout: parseInt(process.env.DB_QUERY_TIMEOUT || '10000'),
-      migrationsEnabled: process.env.DB_MIGRATIONS_ENABLED !== 'false'
+      migrationsEnabled: process.env.DB_MIGRATIONS_ENABLED !== 'false',
     };
   }
 
@@ -521,21 +534,21 @@ function loadConfig(): AppConfig {
           accessKeyId: process.env.AWS_ACCESS_KEY_ID,
           secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
           region: process.env.AWS_REGION,
-          bucket: process.env.S3_BUCKET_NAME
+          bucket: process.env.S3_BUCKET_NAME,
         };
         break;
       case 'gcs':
         config = {
           projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
           keyFile: process.env.GOOGLE_CLOUD_KEY_FILE,
-          bucket: process.env.GCS_BUCKET_NAME
+          bucket: process.env.GCS_BUCKET_NAME,
         };
         break;
       case 'azure':
         config = {
           account: process.env.AZURE_STORAGE_ACCOUNT,
           key: process.env.AZURE_STORAGE_KEY,
-          container: process.env.AZURE_CONTAINER_NAME
+          container: process.env.AZURE_CONTAINER_NAME,
         };
         break;
     }
@@ -546,7 +559,7 @@ function loadConfig(): AppConfig {
   // Validate configuration
   const { error, value } = configSchema.validate(rawConfig, {
     allowUnknown: false,
-    stripUnknown: true
+    stripUnknown: true,
   });
 
   if (error) {
@@ -567,13 +580,13 @@ function applyEnvironmentOverrides(config: AppConfig): AppConfig {
         development: {
           ...config.development,
           developmentMode: true,
-          debugEndpoints: true
+          debugEndpoints: true,
         },
         logging: {
           ...config.logging,
           level: 'debug',
-          format: 'text'
-        }
+          format: 'text',
+        },
       };
 
     case 'test':
@@ -581,17 +594,17 @@ function applyEnvironmentOverrides(config: AppConfig): AppConfig {
         ...config,
         testing: {
           ...config.testing,
-          testMode: true
+          testMode: true,
         },
         logging: {
           ...config.logging,
           level: 'error',
-          logRequests: false
+          logRequests: false,
         },
         cache: {
           ...config.cache,
-          enabled: false
-        }
+          enabled: false,
+        },
       };
 
     case 'staging':
@@ -599,12 +612,12 @@ function applyEnvironmentOverrides(config: AppConfig): AppConfig {
         ...config,
         monitoring: {
           ...config.monitoring,
-          enabled: true
+          enabled: true,
         },
         security: {
           ...config.security,
-          authEnabled: true
-        }
+          authEnabled: true,
+        },
       };
 
     case 'production':
@@ -615,20 +628,20 @@ function applyEnvironmentOverrides(config: AppConfig): AppConfig {
           developmentMode: false,
           debugEndpoints: false,
           mockExternalServices: false,
-          requestTracing: false
+          requestTracing: false,
         },
         logging: {
           ...config.logging,
-          level: 'info'
+          level: 'info',
         },
         security: {
           ...config.security,
-          authEnabled: true
+          authEnabled: true,
         },
         monitoring: {
           ...config.monitoring,
-          enabled: true
-        }
+          enabled: true,
+        },
       };
 
     default:
@@ -687,6 +700,6 @@ export function getEnvironmentInfo() {
     isTest: appConfig.server.nodeEnv === 'test',
     isStaging: appConfig.server.nodeEnv === 'staging',
     isProduction: appConfig.server.nodeEnv === 'production',
-    instanceId: appConfig.server.instanceId
+    instanceId: appConfig.server.instanceId,
   };
 }

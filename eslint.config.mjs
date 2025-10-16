@@ -54,11 +54,7 @@ export default [
       'import/no-extraneous-dependencies': [
         'error',
         {
-          devDependencies: [
-            'tests/**/*.{ts,tsx}',
-            'vitest.config.ts',
-            '**/*.config.{ts,cts,mts}',
-          ],
+          devDependencies: ['tests/**/*.{ts,tsx}', 'vitest.config.ts', '**/*.config.{ts,cts,mts}'],
         },
       ],
       '@typescript-eslint/consistent-type-imports': [
