@@ -1,8 +1,34 @@
+import http from 'node:http';
+import type { Socket } from 'node:net';
+import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import process from 'node:process';
-import '@/core/registry';
+import { randomUUID } from 'node:crypto';
+import express from 'express';
+import type { Express } from 'express';
 import { config as loadEnv } from 'dotenv';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
+import type { AppConfig } from '@/core/config';
+import { loadConfig } from '@/core/config';
+import { ToolExecutor, ToolRegistry } from '@/core/tool-registry';
+import coreTools from '@/tools/core-tools';
+import { createLoggingMiddleware } from '@/middleware/logging';
+import { correlationIdMiddleware } from '@/middleware/correlation';
+import requestValidationMiddleware from '@/middleware/request-validation';
+import createRateLimitMiddleware from '@/middleware/rate-limit';
+import { createCorsMiddleware } from '@/middleware/cors';
+import errorHandler from '@/middleware/error-handler';
+
+export interface RunningServer {
+  app: Express;
+  httpServer: http.Server;
+  config: AppConfig;
+  mcpServer: McpServer;
+  transport: StreamableHTTPServerTransport;
+  start: () => Promise<void>;
+  stop: () => Promise<void>;
+}
 
 /**
  * Bootstraps process-wide environment configuration for the MCP server.
@@ -15,19 +41,150 @@ export function bootstrapEnvironment(): void {
   loadEnv({ path: envPath, override: false });
 }
 
-/**
- * Placeholder server bootstrap. Future stories will replace the body with
- * concrete xmcp server initialization once the core infrastructure lands.
- */
-export async function createServer(): Promise<void> {
-  // eslint-disable-next-line no-console -- Temporary stand-in until logging middleware is added.
-  console.info('Strudel Kit MCP Server bootstrap placeholder executing.');
-  // TODO: integrate xmcp server initialization when available.
+function createExpressApp(config: AppConfig) {
+  const app = express();
+
+  app.disable('x-powered-by');
+  app.use(
+    createCorsMiddleware({
+      enabled: config.security.corsEnabled,
+      origins: config.security.corsOrigins,
+    }),
+  );
+  app.use(correlationIdMiddleware);
+  app.use(
+    createLoggingMiddleware({
+      level: config.logging.level,
+      logRequests: config.logging.logRequests,
+    }),
+  );
+  app.use(
+    createRateLimitMiddleware(config.security.rateLimitRequests, config.security.rateLimitWindowMs),
+  );
+  app.use('/mcp', express.raw({ type: 'application/json', limit: '1mb' }));
+
+  return app;
+}
+
+async function configureMcpServer(config: AppConfig): Promise<{
+  mcpServer: McpServer;
+  transport: StreamableHTTPServerTransport;
+}> {
+  const mcpServer = new McpServer({
+    name: 'strudel-kit-mcp-server',
+    version: '0.1.0',
+  });
+
+  const executor = new ToolExecutor({
+    maxConcurrent: config.tooling.maxConcurrentTools,
+    timeoutMs: config.tooling.toolExecutionTimeout,
+  });
+
+  const registry = new ToolRegistry(mcpServer, executor);
+  coreTools().forEach((tool) => registry.register(tool));
+
+  const transport = new StreamableHTTPServerTransport({
+    enableJsonResponse: true,
+    sessionIdGenerator: () => randomUUID(),
+  });
+
+  await transport.start();
+  await mcpServer.connect(transport);
+
+  return { mcpServer, transport };
+}
+
+export async function createServer(): Promise<RunningServer> {
+  const config = loadConfig();
+  const app = createExpressApp(config);
+  const { mcpServer, transport } = await configureMcpServer(config);
+
+  app.post('/mcp', requestValidationMiddleware, (req, res, next) => {
+    transport.handleRequest(req, res, req.body as Buffer | undefined).catch(next);
+  });
+
+  app.get('/mcp', (req, res, next) => {
+    transport.handleRequest(req, res).catch(next);
+  });
+
+  app.delete('/mcp', (req, res, next) => {
+    transport.handleRequest(req, res).catch(next);
+  });
+
+  app.use(errorHandler);
+
+  const httpServer = http.createServer(app);
+  const activeSockets = new Set<Socket>();
+
+  httpServer.on('connection', (socket) => {
+    activeSockets.add(socket);
+    socket.on('close', () => activeSockets.delete(socket));
+  });
+
+  const start = () =>
+    new Promise<void>((resolve, reject) => {
+      httpServer.once('error', reject);
+      httpServer.listen(config.server.port, config.server.host, () => {
+        httpServer.off('error', reject);
+        // eslint-disable-next-line no-console -- Server lifecycle logging.
+        console.info(`MCP server listening on http://${config.server.host}:${config.server.port}`);
+        resolve();
+      });
+    });
+
+  const stop = async () => {
+    await new Promise<void>((resolve, reject) => {
+      httpServer.close((error) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve();
+      });
+
+      // Forcefully terminate connections that refuse to close within the timeout budget.
+      setTimeout(() => {
+        activeSockets.forEach((socket) => socket.destroy());
+      }, config.tooling.toolExecutionTimeout).unref();
+    });
+
+    await mcpServer.close();
+  };
+
+  return {
+    app,
+    httpServer,
+    config,
+    mcpServer,
+    transport,
+    start,
+    stop,
+  };
 }
 
 async function main(): Promise<void> {
   bootstrapEnvironment();
-  await createServer();
+  const server = await createServer();
+  await server.start();
+
+  const shutdown = async (signal: NodeJS.Signals) => {
+    // eslint-disable-next-line no-console -- Server lifecycle logging.
+    console.info(`Received ${signal}, initiating graceful shutdown.`);
+    await server.stop();
+    // eslint-disable-next-line no-console -- Server lifecycle logging.
+    console.info('Shutdown complete.');
+    process.exit(0);
+  };
+
+  ['SIGINT', 'SIGTERM'].forEach((signal) => {
+    process.once(signal, () => {
+      shutdown(signal as NodeJS.Signals).catch((error) => {
+        // eslint-disable-next-line no-console -- Surface critical shutdown failure.
+        console.error('Failed to shut down cleanly', error);
+        process.exit(1);
+      });
+    });
+  });
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
