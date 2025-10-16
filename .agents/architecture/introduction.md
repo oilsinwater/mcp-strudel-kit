@@ -11,6 +11,6 @@ N/A
 
 ## Change Log
 
-| Date | Version | Description | Author |
-|------|---------|-------------|--------|
-| 2025-09-19 | 1.0 | Initial architecture document | Winston (AI Architect) |
+| Date       | Version | Description                   | Author                 |
+| ---------- | ------- | ----------------------------- | ---------------------- |
+| 2025-09-19 | 1.0     | Initial architecture document | Winston (AI Architect) |

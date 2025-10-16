@@ -33,12 +33,12 @@
 
 **Failed Items (1/6)**:
 
-- ❌ **CRITICAL**: Epic 1 project initialization steps not found - no `.agents/stories/` directory exists
+- ❌ **CRITICAL**: Epic 1 project initialization steps not found - no docs/stories/ directory exists
 - ❌ **CRITICAL**: Repository setup and initial commit processes not defined
 
 **Recommendations**:
 
-- Create `.agents/stories/` directory with Epic 1 for project scaffolding
+- Create docs/stories/ directory with Epic 1 for project scaffolding
 - Define step-by-step project initialization workflow
 
 ---

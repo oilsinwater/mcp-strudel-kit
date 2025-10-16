@@ -5,6 +5,7 @@
 - **Languages & Runtimes:** TypeScript 5.7+, Node.js 20.x (LTS)
 - **Style & Linting:** ESLint 9.x with Airbnb TypeScript style guide, Prettier 3.x for formatting
 - **Test Organization:** Tests colocated with implementation files using `__tests__` subdirectories or `*.test.ts` naming convention
+
 ```
 
 ## Critical Rules
@@ -147,3 +148,4 @@ After completing the architecture:
 
 3. Specific prompts for next agents if needed:
    - For Frontend Architect: "Create frontend architecture for Strudel Kit MCP Server based on this backend architecture, focusing on React/TypeScript implementation with Strudel Kit components"
+```

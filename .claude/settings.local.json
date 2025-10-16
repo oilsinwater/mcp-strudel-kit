@@ -3,7 +3,11 @@
     "allow": [
       "Bash(md-tree:*)",
       "Bash(npm run lint)",
-      "Bash(npm run test)"
+      "Bash(npm run test)",
+      "Read(//Users/phil/**)",
+      "Bash(npm test:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run test:integration:*)"
     ],
     "deny": [],
     "ask": []

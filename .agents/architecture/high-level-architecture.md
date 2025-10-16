@@ -11,6 +11,7 @@ The primary technology choices include Node.js 18+ with TypeScript 5.0+, the xmc
 The architecture follows a modular service style built around the xmcp framework. The repository structure uses a monorepo approach with logical separation of concerns. The primary user interaction flow involves AI agents sending MCP requests to the server, which routes them to appropriate tools that interact with the Strudel Kit CLI and file system to generate scientific applications.
 
 Key architectural decisions include:
+
 1. Using the xmcp framework as the foundation for MCP compliance
 2. Implementing auto-discovery for custom tools in the `src/tools/` directory
 3. Integrating with the Strudel Kit CLI as a subprocess for frontend generation
@@ -24,14 +25,14 @@ graph TB
         Claude[Claude/ChatGPT]
         Other[Other MCP Clients]
     end
-    
+
     subgraph "MCP Server Core"
         Gateway[MCP Gateway]
         Router[Tool Router]
         Registry[Tool Registry]
         Context[Context Manager]
     end
-    
+
     subgraph "Tool Layer"
         CP[create-project]
         ATF[add-task-flow]
@@ -40,20 +41,20 @@ graph TB
         GW[generate-workflow]
         Custom[Custom Tools]
     end
-    
+
     subgraph "Integration Layer"
         StrudelCLI[Strudel Kit CLI]
         FileSystem[File System]
         DataParsers[Data Parsers]
         Templates[Template Engine]
     end
-    
+
     subgraph "Generated Output"
         React[React Apps]
         Config[Configurations]
         Assets[Generated Assets]
     end
-    
+
     Claude --> Gateway
     Other --> Gateway
     Gateway --> Router

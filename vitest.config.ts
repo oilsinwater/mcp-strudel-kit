@@ -16,8 +16,8 @@ export default defineConfig({
           branches: 80,
           functions: 80,
           lines: 80,
-          statements: 80
-        }
+          statements: 80,
+        },
       },
       exclude: [
         'node_modules/**',
@@ -25,16 +25,12 @@ export default defineConfig({
         'coverage/**',
         '**/*.d.ts',
         '**/*.config.*',
-        '**/test-utils/**'
-      ]
+        '**/test-utils/**',
+      ],
     },
 
     // Test file patterns
-    include: [
-      'tests/**/*.test.ts',
-      'tests/**/*.spec.ts',
-      'src/**/*.test.ts'
-    ],
+    include: ['tests/**/*.test.ts', 'tests/**/*.spec.ts', 'src/**/*.test.ts'],
 
     // Global setup and teardown
     globalSetup: './tests/setup/global-setup.ts',
@@ -44,11 +40,10 @@ export default defineConfig({
     testTimeout: 10000,
     hookTimeout: 10000,
 
-
     // Reporter configuration
     reporters: ['verbose', 'json'],
     outputFile: {
-      json: './test-results.json'
+      json: './test-results.json',
     },
 
     // Mock configuration
@@ -57,11 +52,7 @@ export default defineConfig({
 
     // Watch mode configuration
     watch: false,
-    watchExclude: [
-      'node_modules/**',
-      'dist/**',
-      'coverage/**'
-    ]
+    watchExclude: ['node_modules/**', 'dist/**', 'coverage/**'],
   },
 
   // Path resolution for tests
@@ -74,12 +65,12 @@ export default defineConfig({
       '@/middleware': path.resolve(__dirname, './src/middleware'),
       '@/utils': path.resolve(__dirname, './src/utils'),
       '@/integrations': path.resolve(__dirname, './src/integrations'),
-      '@/tests': path.resolve(__dirname, './tests')
-    }
+      '@/tests': path.resolve(__dirname, './tests'),
+    },
   },
 
   // Esbuild configuration for TypeScript
   esbuild: {
-    target: 'node18'
-  }
+    target: 'node18',
+  },
 });

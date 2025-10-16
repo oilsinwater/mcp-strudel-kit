@@ -5,6 +5,7 @@
 **Responsibility:** Entry point for all MCP requests from AI agents
 
 **Key Interfaces:**
+
 - JSON-RPC 2.0 compliant endpoint
 - Request validation and routing
 
@@ -17,6 +18,7 @@
 **Responsibility:** Auto-discovery and registration of MCP tools
 
 **Key Interfaces:**
+
 - Tool registration API
 - Tool lookup by name
 
@@ -29,6 +31,7 @@
 **Responsibility:** Route incoming MCP requests to appropriate tools
 
 **Key Interfaces:**
+
 - Request routing logic
 - Tool execution interface
 
@@ -41,6 +44,7 @@
 **Responsibility:** Interface with the Strudel Kit CLI for frontend generation
 
 **Key Interfaces:**
+
 - Project creation API
 - Task flow addition API
 - Component customization API
@@ -54,6 +58,7 @@
 **Responsibility:** Parse and validate scientific data formats
 
 **Key Interfaces:**
+
 - Data parsing API for different formats
 - Schema inference API
 
@@ -66,6 +71,7 @@
 **Responsibility:** Manage execution context for tool operations
 
 **Key Interfaces:**
+
 - Context creation and disposal
 - State management during tool execution
 
@@ -83,18 +89,18 @@ graph TB
         Registry[Tool Registry]
         Context[Context Manager]
     end
-    
+
     subgraph "Tool Execution Layer"
         Tools[Registered Tools]
         BaseTool[Base Tool Class]
     end
-    
+
     subgraph "Integration Layer"
         StrudelCLI[Strudel CLI Adapter]
         DataParser[Data Parser]
         FileSystem[File System]
     end
-    
+
     Gateway --> Router
     Router --> Registry
     Router --> Context

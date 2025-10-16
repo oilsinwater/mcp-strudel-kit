@@ -2,24 +2,24 @@
 
 ## 8.1 Technical Metrics
 
-|Metric|Baseline|30 Days|90 Days|180 Days|
-|---|---|---|---|---|
-|Test Coverage|80%|85%|90%|95%|
-|Build Success Rate|95%|98%|99%|99.5%|
-|Tool Execution Time (p95)|<500ms|<400ms|<300ms|<250ms|
-|Memory Usage (baseline)|<512MB|<400MB|<350MB|<300MB|
-|Hot Reload Performance|<100ms|<75ms|<50ms|<25ms|
+| Metric                    | Baseline | 30 Days | 90 Days | 180 Days |
+| ------------------------- | -------- | ------- | ------- | -------- |
+| Test Coverage             | 80%      | 85%     | 90%     | 95%      |
+| Build Success Rate        | 95%      | 98%     | 99%     | 99.5%    |
+| Tool Execution Time (p95) | <500ms   | <400ms  | <300ms  | <250ms   |
+| Memory Usage (baseline)   | <512MB   | <400MB  | <350MB  | <300MB   |
+| Hot Reload Performance    | <100ms   | <75ms   | <50ms   | <25ms    |
 
 ## 8.2 Adoption Metrics
 
-|Metric|Target (30 days)|Target (90 days)|Target (180 days)|
-|---|---|---|---|
-|GitHub Stars|100|500|1,000+|
-|NPM Downloads/month|500|2,500|10,000+|
-|Active Contributors|5|20|50+|
-|Community PRs|10|50|200+|
-|Custom Tools Created|25|150|500+|
-|Generated Applications|100|1,000|5,000+|
+| Metric                 | Target (30 days) | Target (90 days) | Target (180 days) |
+| ---------------------- | ---------------- | ---------------- | ----------------- |
+| GitHub Stars           | 100              | 500              | 1,000+            |
+| NPM Downloads/month    | 500              | 2,500            | 10,000+           |
+| Active Contributors    | 5                | 20               | 50+               |
+| Community PRs          | 10               | 50               | 200+              |
+| Custom Tools Created   | 25               | 150              | 500+              |
+| Generated Applications | 100              | 1,000            | 5,000+            |
 
 ## 8.3 Quality Metrics
 

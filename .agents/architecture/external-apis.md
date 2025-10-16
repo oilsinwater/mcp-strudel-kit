@@ -9,6 +9,7 @@
 - **Rate Limits:** Limited by system resources
 
 **Key Endpoints Used:**
+
 - `npx strudel-kit create` - Create new projects
 - `npx strudel-kit add-flow` - Add task flows to existing projects
 - `npx strudel-kit customize` - Modify component properties

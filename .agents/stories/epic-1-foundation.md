@@ -56,6 +56,7 @@ Establish the foundational infrastructure for the Strudel Kit MCP Server, includ
 ## Dependencies for Next Epic
 
 This epic must be completed before Epic 2 (Core Scientific Tools) can begin, as it provides:
+
 - Base tool infrastructure for scientific tool implementation
 - Validation framework for tool inputs/outputs
 - Testing patterns for scientific tool validation
