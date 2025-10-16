@@ -1,7 +1,7 @@
 import { setTimeout as delay } from 'node:timers/promises';
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import type { ToolExecutionContext } from '@/core/context';
-import { ToolConcurrencyError, ToolTimeoutError } from '@/core/errors';
+import type { ToolExecutionContext } from './context.js';
+import { ToolConcurrencyError, ToolTimeoutError } from './errors/index.js';
 
 type QueueResolver = () => void;
 

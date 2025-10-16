@@ -1,9 +1,6 @@
 import { randomUUID } from 'node:crypto';
-import type { RequestHandlerExtra } from '@modelcontextprotocol/sdk/dist/esm/shared/protocol.js';
-import type {
-  ServerNotification,
-  ServerRequest,
-} from '@modelcontextprotocol/sdk/dist/esm/types.js';
+import type { RequestHandlerExtra } from '@modelcontextprotocol/sdk/shared/protocol.js';
+import type { ServerNotification, ServerRequest } from '@modelcontextprotocol/sdk/types.js';
 
 export interface ToolExecutionContext {
   correlationId: string;

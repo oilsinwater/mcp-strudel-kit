@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import type { ToolDefinition } from '@/core/tool-registry';
+import type { ToolDefinition } from '@/core/tool-registry.js';
 
-export default function coreTools(): ToolDefinition[] {
+export default function coreTools(): ToolDefinition<any, any>[] {
   return [
     {
       name: 'health_check',
@@ -31,12 +31,12 @@ export default function coreTools(): ToolDefinition[] {
       description: 'Echoes the provided message payload.',
       inputSchema: {
         message: z.string().min(1).describe('Message to echo in the response body.'),
-      },
+      } as const,
       outputSchema: {
         message: z.string(),
         correlationId: z.string(),
         receivedAt: z.string(),
-      },
+      } as const,
       async handler(args, context) {
         const structuredContent = {
           message: args.message,

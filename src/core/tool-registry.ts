@@ -6,13 +6,13 @@ import {
   type ToolAnnotations,
 } from '@modelcontextprotocol/sdk/types.js';
 import { z, type ZodRawShape } from 'zod';
-import { createExecutionContext, type ToolExecutionContext } from './context';
-import { ToolConcurrencyError, ToolTimeoutError } from './errors';
-import type { ToolExecutor } from './tool-executor';
+import { createExecutionContext, type ToolExecutionContext } from './context.js';
+import { ToolConcurrencyError, ToolTimeoutError } from './errors/index.js';
+import type { ToolExecutor } from './tool-executor.js';
 
 export type ToolShape = ZodRawShape;
 
-export { ToolExecutor } from './tool-executor';
+export { ToolExecutor } from './tool-executor.js';
 
 export interface ToolDefinition<
   Input extends ToolShape | undefined = undefined,
@@ -126,7 +126,7 @@ export class ToolRegistry {
           }, context);
 
           return result;
-        } catch (error) {
+        } catch (error: unknown) {
           if (error instanceof ToolTimeoutError) {
             throw new McpError(ErrorCode.RequestTimeout, error.message);
           }
