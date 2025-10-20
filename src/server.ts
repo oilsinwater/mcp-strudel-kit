@@ -11,6 +11,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import type { AppConfig } from '@/core/config.js';
 import { loadConfig } from '@/core/config.js';
+import registerMcpRoutes from '@/core/router.js';
 import { ToolExecutor, ToolRegistry } from '@/core/tool-registry.js';
 import coreTools from '@/tools/core-tools.js';
 import { createLoggingMiddleware } from '@/middleware/logging.js';
@@ -100,18 +101,7 @@ export async function createServer(): Promise<RunningServer> {
   const app = createExpressApp(config);
   const { mcpServer, transport } = await configureMcpServer(config);
 
-  app.post('/mcp', (req, res, next) => {
-    // Pass undefined so the transport reads the body from the request stream
-    transport.handleRequest(req, res, undefined).catch(next);
-  });
-
-  app.get('/mcp', (req, res, next) => {
-    transport.handleRequest(req, res).catch(next);
-  });
-
-  app.delete('/mcp', (req, res, next) => {
-    transport.handleRequest(req, res).catch(next);
-  });
+  registerMcpRoutes(app, transport);
 
   app.use(errorHandler);
 
