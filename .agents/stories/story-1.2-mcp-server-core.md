@@ -2,7 +2,7 @@ h# Story 1.2: MCP Server Core Implementation
 
 ## Status
 
-Ready for Review
+Ready for Done
 
 ## Story
 
@@ -143,3 +143,49 @@ Ready for Review
 - tests/integration/server-startup.test.ts
 
 ## QA Results
+
+### Review Date: 2025-10-20
+
+### Reviewed By: Quinn (Test Architect)
+
+### Code Quality Assessment
+
+Implementation aligns with the documented MCP gateway architecture: server bootstrap (`src/server.ts`) wires the xmcp transport with correlation, logging, CORS, rate limiting, and centralized error handling. Request validation middleware (`src/middleware/request-validation.ts`) enforces JSON-RPC 2.0 payloads and size limits, and the integration flow test (`tests/integration/mcp-endpoint.test.ts`) exercises initialize → tools/call with correlation propagation. Tool execution safeguards (timeouts, concurrency, abort handling) in `src/core/tool-executor.ts` match acceptance criteria and are covered by unit tests. No blocking defects observed.
+
+### Refactoring Performed
+
+None
+
+### Compliance Check
+
+- Coding Standards: ✓ Matches TypeScript, logging, and security guidance from architecture docs
+- Project Structure: ✓ Code lives under prescribed `src/` submodules and test locations
+- Testing Strategy: ✓ `npm test` (Vitest) passes; integration and unit coverage hit key paths
+- All ACs Met: ✓ All five acceptance criteria satisfied by implementation and tests
+
+### Improvements Checklist
+
+- [ ] Add a unit test exercising the rate-limiting 429 response path (`src/middleware/rate-limit.ts`)
+- [ ] Add a negative test covering non-JSON `Content-Type` handling in `request-validation` middleware
+
+### Security Review
+
+No new security issues detected; rate limiting and JSON-RPC validation enforce baseline protections. Note: in-memory rate limiting remains single-instance and should be revisited if the server scales horizontally.
+
+### Performance Considerations
+
+Request validation caps payloads at 1 MiB and the executor timeout defaults prevent runaway tool work; no additional performance risks observed for current scope.
+
+### Files Modified During Review
+
+- None
+
+### Gate Status
+
+Gate: PASS → .agents/qa/gates/1.2-mcp-server-core-implementation.yml
+Risk profile: (not generated)
+NFR assessment: (not generated)
+
+### Recommended Status
+
+[✓ Ready for Done]
