@@ -4,7 +4,7 @@ story_title: 'Story 1.2: MCP Server Core Implementation'
 gate: PASS
 status_reason: 'Integration and unit coverage meet acceptance criteria; no blocking defects identified.'
 reviewer: 'Quinn (Test Architect)'
-updated: '2025-10-20T20:46:00Z'
+updated: '2025-10-20T15:08:00Z'
 top_issues: []
 waiver:
   active: false

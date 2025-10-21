@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types';
-import { ToolExecutor } from '@/core/tool-registry';
-import { ToolTimeoutError } from '@/core/errors';
+import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
+import { ToolExecutor } from '@/core/tool-registry.js';
+import { ToolTimeoutError } from '@/core/errors/index.js';
 
 interface TestContext {
   correlationId: string;

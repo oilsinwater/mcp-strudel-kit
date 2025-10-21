@@ -139,7 +139,7 @@ describe('MCP HTTP endpoint', () => {
     });
 
     expect(response.status).toBe(400);
-    const result = await response.json();
+    const result = (await response.json()) as { error?: any };
     expect(result.error).toBeDefined();
   });
 });
