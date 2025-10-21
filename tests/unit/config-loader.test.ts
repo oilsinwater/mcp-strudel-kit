@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { loadConfig } from '@/core/config';
+import { loadConfig } from '@/core/config.js';
 
 describe('configuration loader', () => {
   it('applies default values when environment variables are absent', () => {
