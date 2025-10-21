@@ -93,8 +93,8 @@ mcp-strudel-kit/
 │   ├── middleware/            # Express middleware
 │   ├── integrations/          # External service integrations
 │   └── utils/                 # Shared utilities
+├── .agents/                   # Documentation workspace (architecture, PRD, stories, QA)
 ├── tests/                     # Test suites
-├── docs/                      # Project documentation
 ├── config/                    # Configuration files
 └── dist/                      # Built output
 ```
@@ -153,7 +153,7 @@ DEBUG_ENDPOINTS=true
 
 Claude, Gemini, Quinn, OpenCode, Crush, and Coding agents now share configurable MCP endpoints. Update `MCP_SERVER_SERENA_ENDPOINT`, `MCP_SERVER_PLAYWRIGHT_ENDPOINT`, and `MCP_SERVER_GITHUB_ENDPOINT` (plus the matching `*_ENABLED` flags) to point at your Serena, Playwright, and GitHub MCP servers before activating the agents.
 
-See [Environment Configuration Guide](./docs/environment-configuration.md) for complete options.
+See the [Architecture Guides](./.agents/architecture.md) for configuration details and environment setup references.
 
 ## 🔧 Creating Custom Tools
 
@@ -443,11 +443,11 @@ We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md)
 
 ## 📖 Documentation
 
-- [API Documentation](./docs/api-standards.md)
-- [Architecture Guide](./docs/architecture.md)
-- [Tool Development Guide](./docs/tool-development.md)
-- [Deployment Guide](./docs/deployment.md)
-- [Troubleshooting](./docs/troubleshooting.md)
+- [Architecture Overview](./.agents/architecture.md)
+- [Product Requirements](./.agents/prd.md)
+- [API Standards](./.agents/api-standards.md)
+- [Monitoring & Logging](./.agents/monitoring-logging.md)
+- [Persistence Strategy](./.agents/persistence-strategy.md)
 
 ## 🔗 Related Projects
 
@@ -463,7 +463,7 @@ MIT License - see [LICENSE](./LICENSE) file for details.
 
 - **GitHub Issues**: [Report bugs or request features](https://github.com/strudel-science/mcp-strudel-kit/issues)
 - **Discussions**: [Community discussions and questions](https://github.com/strudel-science/mcp-strudel-kit/discussions)
-- **Documentation**: [Comprehensive guides and API docs](./docs/)
+- **Documentation**: [Comprehensive guides and API docs](./.agents/)
 
 ---
 

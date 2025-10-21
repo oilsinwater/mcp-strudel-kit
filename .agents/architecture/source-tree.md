@@ -2,6 +2,13 @@
 
 ```
 strudel-kit-mcp-server/
+├── .agents/                   // Hidden workspace docs (architecture, PRD shards, stories, QA)
+│   ├── architecture/          // Detailed architecture shards
+│   ├── stories/               // Epic and story specifications
+│   ├── prd/                   // PRD shards and indices
+│   ├── qa/                    // QA gates, risk profiles, and reviews
+│   ├── architecture.md        // Architecture overview index
+│   └── prd.md                 // PRD overview index
 ├── src/
 │   ├── server.ts              // Main server entry point
 │   ├── core/
@@ -33,7 +40,6 @@ strudel-kit-mcp-server/
 │       ├── fileSystem.ts      // File operations
 │       ├── process.ts         // Child process management
 │       └── cache.ts           // Response caching
-├── docs/                      // Documentation
 ├── tests/                     // Unit and integration tests
 ├── config/                    // Configuration files
 └── package.json               // Project configuration

@@ -1,0 +1,42 @@
+schema: 1
+story: '1.1'
+story_title: 'Story 1.1: Project Initialization and Scaffolding'
+gate: PASS
+status_reason: 'Configuration now targets .agents/ workspace; mandated activation docs load successfully and all validations pass.'
+reviewer: 'Quinn (Test Architect)'
+updated: '2025-10-15T01:05:00Z'
+
+top_issues: []
+waiver:
+  active: false
+
+quality_score: 100
+expires: '2025-10-29T01:05:00Z'
+
+evidence:
+  tests_reviewed: 8
+  risks_identified: 0
+  trace:
+    ac_covered: [1, 2, 3, 4, 5]
+    ac_gaps: []
+
+nfr_validation:
+  security:
+    status: PASS
+    notes: 'No security-sensitive surfaces touched in this scaffolding story.'
+  performance:
+    status: PASS
+    notes: 'Bootstrap placeholders only; no runtime risks identified.'
+  reliability:
+    status: PASS
+    notes: 'Integration tests cover startup and environment bootstrapping.'
+  maintainability:
+    status: PASS
+    notes: '.bmad-core/core-config.yaml references .agents/ workspace, restoring onboarding workflow.'
+
+recommendations:
+  immediate: []
+  future:
+    - action: 'Add a lightweight README inside .agents/ to help contributors discover the documentation bundle.'
+      refs:
+        - '.agents/'

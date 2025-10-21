@@ -1,6 +1,6 @@
 # Risk Profile: Story 1.1 - Project Initialization and Scaffolding
 
-**Story**: docs/stories/story-1.1-project-initialization.md  
+**Story**: .agents/stories/story-1.1-project-initialization.md  
 **Epic**: Foundation & Core Infrastructure  
 **Date**: 2025-09-24  
 **Assessed by**: Test Architect
